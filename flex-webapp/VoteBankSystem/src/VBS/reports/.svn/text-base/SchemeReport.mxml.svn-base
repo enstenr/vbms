@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="100%"   xmlns:effects="VBS.utils.charts.effects.*" xmlns:utils="VBS.utils.*" >
+	<fx:Declarations>
+		<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+		 	<s:method name="fetchComplaints"        result="fetchComplaintResult(event)"  /> 
+		</s:RemoteObject>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<!-- This Stroke is used for the callout lines. -->
+		<mx:SolidColorStroke id="callouts" weight="2" color="0x999999" alpha=".8" caps="square"/>
+		
+		<!-- This Stroke is used to separate the wedges in the pie. -->
+		<mx:SolidColorStroke id="radial" weight="1" color="0xFFFFCC" alpha=".3"/>
+		
+		<!-- This Stroke is used for the outer border of the pie. -->
+		<mx:SolidColorStroke id="pieborder" color="0x000000" weight="2" alpha=".5"/>
+		
+		<effects:DrillDownEffect id="effD" duration="1500"  />
+		<effects:DrillUpEffect id="effU" duration="1500" effectEnd="chart2.mouseChildren = true;" />
+		
+		<mx:GroupingCollection id="gc" source="{complaintAC}" >
+			<mx:Grouping>
+				<mx:fields>
+					<mx:GroupingField name="year_name" >
+						<mx:summaries>
+							<mx:SummaryRow summaryPlacement="group" >
+								<mx:fields>
+									<mx:SummaryField dataField="count" operation="COUNT" />
+								</mx:fields>
+							</mx:SummaryRow>
+						</mx:summaries>
+					</mx:GroupingField>
+					<mx:GroupingField name="month_name">
+						<mx:summaries>
+							<mx:SummaryRow summaryPlacement="group" >
+								<mx:fields>
+									<mx:SummaryField dataField="count" operation="COUNT" />
+								</mx:fields>
+							</mx:SummaryRow>
+						</mx:summaries>
+					</mx:GroupingField>
+					 <mx:GroupingField name="date_name">
+						<mx:summaries>
+							<mx:SummaryRow summaryPlacement="group" >
+								<mx:fields>
+									<mx:SummaryField dataField="count" operation="COUNT" />
+								</mx:fields>
+							</mx:SummaryRow>
+						</mx:summaries>
+					</mx:GroupingField>
+					 	<mx:GroupingField name="area">
+						<mx:summaries>
+							<mx:SummaryRow summaryPlacement="group" >
+								<mx:fields>
+									<mx:SummaryField dataField="count" operation="COUNT" />
+								</mx:fields>
+							</mx:SummaryRow>
+						</mx:summaries>
+					</mx:GroupingField>
+					<mx:GroupingField name="status">
+						<mx:summaries>
+							<mx:SummaryRow summaryPlacement="group" >
+								<mx:fields>
+									<mx:SummaryField dataField="count" operation="COUNT" />
+								</mx:fields>
+							</mx:SummaryRow>
+						</mx:summaries>
+					</mx:GroupingField> 
+					
+				</mx:fields>
+			</mx:Grouping>
+		</mx:GroupingCollection>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.charts.HitData;
+			import mx.charts.events.ChartItemEvent;
+			import mx.collections.ArrayCollection;
+			import mx.collections.HierarchicalCollectionView;
+			import mx.collections.IList;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.ResultEvent;
+			var viewUserCollection:ArrayCollection=new ArrayCollection;
+			 [Bindable]
+			private var hView2:HierarchicalCollectionView ;
+		 
+			public function formGridObject():void{
+				//prepareData(); 
+				empRO.fetchComplaints(null);
+			
+			}
+			private function prepareData():void
+			{
+				gc.refresh();        	
+				hView2 = new HierarchicalCollectionView(gc);
+			}
+			[Bindable] var count:int=0;
+			//event handler
+			private function drillDownUp2(event:ChartItemEvent):void
+			{
+				if (event.hitSet && event.hitSet.length)
+				{
+					//drillup
+					if (event.ctrlKey)
+					{
+						 
+						if(count==0)
+							return;
+						count--;
+						var hitItem:HitData = event.hitSet[0];
+						var parent1:Object = hView2.getParentItem(hitItem.item);
+						var parent2:Object = hView2.getParentItem(parent1);
+						
+						chart2.mouseChildren = false;
+						chart2.series[0].setStyle("showDataEffect",effU);
+						if (!parent2)
+						{
+							chart2.dataProvider = hView2.source.getRoot();
+							 
+						//	effU.drillToIndex = IList(chart2.dataProvider).getItemIndex(parent1);
+						} 
+						else
+						{
+							chart2.dataProvider = hView2.getChildren(parent2); 
+							 
+							//effU.drillToIndex = IList(chart2.dataProvider).getItemIndex(parent1);
+						} 
+					}
+					else //drilldown
+					{
+						 
+						if(count==4)
+							return;
+						count++;
+						
+						var hitItem:HitData = event.hitSet[0];
+						chart2.mouseChildren = false;
+ 						//effD.drillFromIndex = event.hitData.chartItem.index;
+						chart2.series[0].setStyle("showDataEffect",effD);
+						
+						if (hitItem.item.hasOwnProperty("children"))
+						{
+							hView2.openNode(hitItem.item);
+							chart2.dataProvider = hView2.getChildren(hitItem.item);
+ 						}
+					}
+				}
+			}
+			
+			[Bindable] var complaintCount:int=0;
+			//event handler
+			private function complaintChartdrillDownUp2(event:ChartItemEvent):void
+			{
+				if (event.hitSet && event.hitSet.length)
+				{
+					//drillup
+					if (event.ctrlKey)
+					{
+						if(complaintCount==0)
+							return;
+						complaintCount--;
+						
+						var hitItem:HitData = event.hitSet[0];
+						var parent1:Object = hView2.getParentItem(hitItem.item);
+						var parent2:Object = hView2.getParentItem(parent1);
+						
+						chart3.mouseChildren = false;
+						chart3.series[0].setStyle("showDataEffect",effU);
+						if (!parent2)
+						{
+							chart3.dataProvider = hView2.source.getRoot();
+							
+							effU.drillToIndex = IList(chart3.dataProvider).getItemIndex(parent1);
+						} 
+						else
+						{
+							chart3.dataProvider = hView2.getChildren(parent2); 
+							
+							effU.drillToIndex = IList(chart3.dataProvider).getItemIndex(parent1);
+						} 
+					}
+					else //drilldown
+					{
+						if(complaintCount==4)
+							return;
+						complaintCount++;
+						
+						var hitItem:HitData = event.hitSet[0];
+						var children:Object=hView2.getChildren(hitItem.item);
+					 
+						chart3.mouseChildren = false;
+						effD.drillFromIndex = event.hitData.chartItem.index;
+						chart3.series[0].setStyle("showDataEffect",effD);
+						
+						if (hitItem.item.hasOwnProperty("children"))
+						{
+							hView2.openNode(hitItem.item);
+							chart3.dataProvider = hView2.getChildren(hitItem.item);
+						}
+					}
+				}
+			}
+			
+			function dataTipFunction(hitData:HitData):String{
+				if(hitData.item.hasOwnProperty('GroupLabel'))
+				return "<b>Title  : </b>"+hitData.item.GroupLabel+"<br><b>Count is  : "+hitData.item.count;
+				else
+					return "";
+			}
+			
+		 
+			[Bindable]public var complaintAC:ArrayCollection;
+			private function fetchComplaintResult(event:ResultEvent):void{
+				 complaintAC =event.result as ArrayCollection;
+				//flatData=complaintAC.toArray();
+				 gc.refresh();        	
+				 hView2 = new HierarchicalCollectionView(gc);
+			}
+
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				var excelReportPopup:ExcelReport;
+				excelReportPopup=ExcelReport(PopUpManager.createPopUp(this,ExcelReport,true));
+				PopUpManager.centerPopUp(excelReportPopup);
+				excelReportPopup.currentState='schemestate';
+			}
+
+
+			protected function linkbutton2_clickHandler(event:MouseEvent):void
+			{
+				var excelReportPopup:ExcelReport;
+				excelReportPopup=ExcelReport(PopUpManager.createPopUp(this,ExcelReport,true));
+				PopUpManager.centerPopUp(excelReportPopup);
+			}
+
+		]]>
+	</fx:Script>
+	<s:Panel x="0" y="0" width="100%" height="409" title="Reports">
+		<!--<s:DropDownList x="73" y="9"></s:DropDownList>
+		<s:Label x="10" y="10" text="Year" width="55" height="20" verticalAlign="middle" textAlign="right"/>
+		-->   
+		 
+		
+		<s:BorderContainer x="10" y="38" width="605" height="324">
+			<utils:LinkButton icon="@Embed(source='../../images/icoExcel.png')" label="Scheme Report" x="467" y="10" click="linkbutton1_clickHandler(event)"/>
+		 	<mx:ColumnChart id="chart2" dataProvider="{hView2}"  itemClick="drillDownUp2(event)" height="278" width="350" x="10" y="34"  showDataTips="true" dataTipFunction="dataTipFunction" > 
+				<mx:horizontalAxis>
+					<mx:CategoryAxis categoryField="GroupLabel"  />    	
+				</mx:horizontalAxis>	
+				<mx:series>
+					<mx:ColumnSeries yField="count"  >
+						<mx:fill>
+							<mx:LinearGradient>
+								<mx:entries>
+									<mx:GradientEntry color="blue" ratio="0.00" alpha="0.9"/>
+									<!--<mx:GradientEntry color="red" ratio="0.33" alpha="0.5"/>
+									<mx:GradientEntry color="blue" ratio="0.66" alpha="0.5"/>-->
+								</mx:entries>
+							</mx:LinearGradient>
+						</mx:fill>
+						
+					</mx:ColumnSeries>
+					
+				</mx:series>
+				
+			</mx:ColumnChart>
+			
+			<s:Label x="41" y="10" text="Scheme Report" width="98" height="15"/>
+		</s:BorderContainer>
+		
+		
+		<s:BorderContainer x="651" y="38" width="583" height="323">
+			<utils:LinkButton label="Complaints Report" x="429" y="8" click="linkbutton2_clickHandler(event)"/>
+			<mx:ColumnChart id="chart3" dataProvider="{hView2}"  itemClick="complaintChartdrillDownUp2(event)" height="278" width="350" x="10" y="33"  dataTipFunction="dataTipFunction" showDataTips="true" >
+				<mx:horizontalAxis>
+					<mx:CategoryAxis categoryField="GroupLabel"  />    	
+				</mx:horizontalAxis>	
+				<mx:series>
+					<mx:ColumnSeries yField="count"  >
+						<mx:fill>
+							<mx:LinearGradient>
+								<mx:entries>
+									<mx:GradientEntry color="blue" ratio="0.00" alpha="0.9"/>
+									<!--<mx:GradientEntry color="red" ratio="0.33" alpha="0.5"/>
+									<mx:GradientEntry color="blue" ratio="0.66" alpha="0.5"/>-->
+								</mx:entries>
+							</mx:LinearGradient>
+						</mx:fill>
+						
+					</mx:ColumnSeries>
+					
+				</mx:series>
+				
+			</mx:ColumnChart>
+			<s:Label x="47" y="9" text="Complaints Report"/>
+			
+		</s:BorderContainer>
+	</s:Panel>
+</s:NavigatorContent>

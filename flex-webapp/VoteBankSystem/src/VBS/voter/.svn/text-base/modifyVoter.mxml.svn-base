@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas  xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			xmlns:s="library://ns.adobe.com/flex/spark" 
+			xmlns:mx="library://ns.adobe.com/flex/mx" width="100%"   height="100%"      >
+	<fx:Script source="../utils/vbscommon.as"/> 
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mx:DateFormatter id="dtformat"  formatString="MM/DD/YYYY" />
+		
+		<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+			<s:method name="fetchVoter"  result="fetchVoterResult(event)" fault="faultHandler(event);"/>
+			<s:method name="saveorUpdateVoter"  result="saveorUpdateVoterResult(event)" fault="faultHandler(event);"/>
+		</s:RemoteObject>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import VBS.domain.VbmsVoterDTO;
+			import mx.rpc.events.ResultEvent;
+			
+			import spark.events.TextOperationEvent;
+			public function fetchVoterResult(event:ResultEvent):void{
+				voterAC=event.result as ArrayCollection;
+			}
+			public function saveorUpdateVoterResult(event:ResultEvent):void{
+				Alert.show("Successfully Added Voter","VBMS Message",4);	
+			}
+			protected function button1_clickHandler(event:MouseEvent):void
+			{ 
+				var selectedcollection:ArrayCollection=new ArrayCollection;
+				for(var count:int=0;count<voterAC.length;count++){
+					if((voterAC.getItemAt(count) as VbmsVoterDTO).isSelected){
+						selectedcollection.addItem(voterAC.getItemAt(count));
+					}
+				}
+				if(selectedcollection==null || selectedcollection.length==0)
+				{	Alert.show("Please Select a Record ","VBMS Message",4);
+					return;
+					
+				}
+				empRO.saveorUpdateVoter(selectedcollection);
+			}
+
+			protected function textinput1_changeHandler(event:TextOperationEvent):void
+			{
+				var voterObj:VbmsVoterDTO=new VbmsVoterDTO;
+				voterObj.votername=voternameid.text;
+				voterObj.cardnumber=votercardid.text;
+				empRO.fetchVoter(voterObj);
+			}
+
+		]]>
+	</fx:Script>
+	<mx:Panel title="View Voter"  styleName="stPanel" id="disk" layout="vertical"  
+	horizontalGap="0" verticalGap="0" paddingBottom="1" paddingLeft="3" paddingRight="3"  width="100%"   height="100%" >
+<s:BorderContainer width="100%"   id="viewVoter" styleName="stPanel" visible="true"  includeInLayout="true" dropShadowVisible="true" height="100%">
+	<mx:Grid width="100%">
+		<mx:GridRow width="100%"> 
+			<mx:GridItem width="100%">
+				<mx:Spacer  height="10" width="100%"/>	
+			</mx:GridItem>
+			
+		</mx:GridRow>
+		<mx:GridRow width="100%" horizontalAlign="center">
+			<mx:GridItem width="100%" horizontalAlign="center">
+ 	 			<mx:Label text="Voter Name" x="10" y="10"  />
+			 	<s:TextInput id="voternameid"  x="83" y="10" change="textinput1_changeHandler(event)"/>
+				
+				<mx:Label text="Voter Card Number" x="10" y="10"  />
+				<s:TextInput id="votercardid"  x="83" y="10" change="textinput1_changeHandler(event)"/>
+				
+				
+				
+			<!--	<mx:Label text="Constituency" x="10" y="10"/>
+				<s:DropDownList />
+				<mx:Label text="Area" x="10" y="10"/>
+				<s:DropDownList />
+				-->
+	 		</mx:GridItem>
+		</mx:GridRow>
+	 	<mx:GridRow width="100%" horizontalAlign="center" >
+			<mx:GridItem width="100%" horizontalAlign="center">
+				
+			
+				<mx:DataGrid width="90%" wordWrap="true"  editable="true"   draggableColumns="true" id="dg" dataProvider="{voterAC}">
+					<mx:columns>
+						<mx:DataGridColumn headerText="Select" width="48" editable="false">
+							<mx:itemRenderer>
+								<fx:Component>
+									<mx:HBox horizontalAlign="center">
+										
+										<fx:Script>
+											<![CDATA[
+												override public function  set data(value:Object):void {
+													super.data=value;
+													checkdel.selected=data.isSelected;
+												}
+												public function deletedClick():void{
+													data.isSelected=(checkdel.selected?'N':'Y');
+												}
+											]]>
+										</fx:Script>
+										<mx:CheckBox   id="checkdel" selected="false" click="deletedClick();"	   />						
+									</mx:HBox>
+									
+								</fx:Component>
+							</mx:itemRenderer>
+						</mx:DataGridColumn> 
+						<mx:DataGridColumn headerText="Name"    dataField="votername"   editable="true"/>
+						<mx:DataGridColumn headerText="Card Number" dataField="cardnumber"      editable="true"/>
+						<mx:DataGridColumn headerText="address" dataField="address"    wordWrap="true"  editable="true"/>
+						<mx:DataGridColumn headerText="constituency"    dataField="constituency"   editable="true"/>
+						<mx:DataGridColumn headerText="boothnumber" dataField="boothnumber"       editable="true"/>
+						<mx:DataGridColumn headerText="ward" dataField="ward"   wordWrap="true"  editable="true"/>
+						<mx:DataGridColumn headerText="gender"    dataField="gender"   editable="true"/>
+						<mx:DataGridColumn headerText="age" dataField="age"    editable="true"/>
+						<mx:DataGridColumn headerText="qualification" dataField="qualification"    wordWrap="true"  editable="true"/>
+						<mx:DataGridColumn headerText="maritalstatus"    dataField="maritalstatus"  editable="true"/>
+						<mx:DataGridColumn headerText="children" dataField="children"      editable="true"/>
+						<mx:DataGridColumn headerText="childrenqualification" dataField="childrenqualification"    wordWrap="true"  editable="true"/>
+						<mx:DataGridColumn headerText="houseincome"    dataField="houseincome"  editable="true"/>
+						<mx:DataGridColumn headerText="housetype" dataField="housetype"       editable="true"/>
+						<mx:DataGridColumn headerText="rentyears" dataField="rentyears"   wordWrap="true"  editable="true"/>
+						<mx:DataGridColumn headerText="fathername" dataField="fathername"   wordWrap="true"  editable="true"/>
+								 
+						 
+					</mx:columns>
+				</mx:DataGrid>
+		</mx:GridItem>
+ 		</mx:GridRow>
+		<mx:GridRow width="100%">
+			<mx:GridItem width="100%">
+				<mx:Spacer  height="10" width="100%"/>	
+			</mx:GridItem>
+			
+		</mx:GridRow>
+		<mx:GridRow width="100%">
+			<mx:GridItem  width="100%"  horizontalAlign="center" >
+				
+				<s:Button  label="Update Voter" click="button1_clickHandler(event)" />
+			</mx:GridItem>		
+		</mx:GridRow>
+		<mx:GridRow width="100%">
+			<mx:GridItem width="100%">
+				<mx:Spacer  height="10" width="100%"/>	
+			</mx:GridItem>
+			
+		</mx:GridRow>
+	
+	</mx:Grid>
+</s:BorderContainer>
+	
+</mx:Panel>
+</mx:Canvas>

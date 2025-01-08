@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexProperties enableServiceManager="false" flexServerFeatures="4" flexServerType="2" serverContextRoot="/vbsapp" serverRoot="F:/workspacerajesh/voteBankingSystemApp" serverRootURL="http://localhost:8080/vbsapp" toolCompile="true" useServerFlexSDK="false" version="2"/>

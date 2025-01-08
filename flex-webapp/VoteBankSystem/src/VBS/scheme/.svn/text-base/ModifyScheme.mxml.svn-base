@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx"   height="300" xmlns:utils="VBS.utils.*"  >
+	<fx:Script source="../utils/vbscommon.as"/> 
+	<fx:Script> 
+		<![CDATA[
+			import VBS.domain.VbmsSchemeDTO;
+			
+			import mx.rpc.events.ResultEvent;
+			[Bindable] public var schemeAC:ArrayCollection=new ArrayCollection;
+			private function fetchSchemeResult(event:ResultEvent):void{
+				 
+				
+				schemeAC=event.result as ArrayCollection;
+			 
+			}
+			public function fetchScheme():void{
+			 
+				empRO.fetchSchemes(null);
+			}
+			public function saveorUpdateSchemeResult(event:ResultEvent):void{
+				Alert.show("Schemes Saved Successfully");
+			}
+			public function updateScheme():void{
+				var selectedcollection:ArrayCollection=new ArrayCollection;
+				for(var count:int=0;count<schemeAC.length;count++){
+					if((schemeAC.getItemAt(count) as VbmsSchemeDTO).isSelected){
+						selectedcollection.addItem(schemeAC.getItemAt(count));
+					}
+				}
+				if(selectedcollection==null || selectedcollection.length==0)
+				{	Alert.show("Please Select a Record ","VBMS Message",4);
+					return;
+					
+				}
+				empRO.saveorUpdateScheme(selectedcollection);
+			}
+			
+			public function filterGrid():void{
+				schemeAC.filterFunction=myFilterFunction;
+				schemeAC.refresh();
+			}
+			
+			public function myFilterFunction(item:Object):Boolean{
+				if((item as VbmsSchemeDTO).schemename.toUpperCase().indexOf(schemenameid.text.toUpperCase())>=0)
+					return true;
+				else 
+					return false;
+				
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+			<s:method name="fetchSchemes"             result="fetchSchemeResult(event);" fault="faultHandler(event);"/>
+			<s:method name="saveorUpdateScheme"      result="saveorUpdateSchemeResult(event)"  fault="faultHandler(event);"/>
+	 	</s:RemoteObject>
+	</fx:Declarations>
+	<mx:Panel title="View Scheme"  styleName="stPanel" id="disk" layout="vertical"  
+			  horizontalGap="0" verticalGap="0" paddingBottom="1" paddingLeft="3" paddingRight="3"  width="100%" height="100%" >
+		<s:BorderContainer width="100%"   id="viewVoter" styleName="stPanel" visible="true"  includeInLayout="true" dropShadowVisible="true">
+			<mx:Grid width="100%" horizontalAlign="center">
+				<mx:GridRow width="100%"> 
+					<mx:GridItem width="100%">
+						<mx:Spacer  height="10" width="100%"/>	
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				<mx:GridRow width="100%" horizontalAlign="center">
+					<mx:GridItem width="100%" horizontalAlign="center">
+						<mx:Label text="Scheme Name" x="10" y="10"/>
+						<s:TextInput  x="83" y="10" id="schemenameid" change="filterGrid();"/>
+						
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%"  horizontalAlign="center">
+					<mx:GridItem width="100%" horizontalAlign="center">
+					
+						
+						<mx:DataGrid width="80%" wordWrap="true" rowCount="10"  editable="true"   draggableColumns="true" id="dg" dataProvider="{schemeAC}">
+							<mx:columns>
+								<mx:DataGridColumn headerText="Select" width="48" editable="false">
+									<mx:itemRenderer>
+										<fx:Component>
+											<mx:HBox horizontalAlign="center">
+												
+												<fx:Script>
+													<![CDATA[
+														override public function  set data(value:Object):void {
+															super.data=value;
+															checkdel.selected=data.isSelected;
+														}
+														public function deletedClick():void{
+															data.isSelected=(checkdel.selected?'N':'Y');
+														}
+													]]>
+												</fx:Script>
+												<mx:CheckBox   id="checkdel" selected="false" click="deletedClick();"	   />						
+											</mx:HBox>
+											
+										</fx:Component>
+									</mx:itemRenderer>
+								</mx:DataGridColumn> 
+								<mx:DataGridColumn headerText="Scheme Name"    dataField="schemename"   editable="true"/>
+								<mx:DataGridColumn headerText="Scheme Description" dataField="schemedescription"    wordWrap="true"  editable="true"/>
+								<mx:DataGridColumn headerText="Scheme Start Date"    dataField="startdate"   editable="true"/>
+								<mx:DataGridColumn headerText="Scheme End Date" dataField="enddate"    wordWrap="true"  editable="true"/>
+								<mx:DataGridColumn headerText="Age Lower Limit"     dataField="agelowerlimit"   editable="true"/>
+								<mx:DataGridColumn headerText="Age Upper Limit"    dataField="ageupperlimit"   wordWrap="true"  editable="true"/>
+								<mx:DataGridColumn headerText="Gender" editable="false"  dataField="status" >
+									<mx:itemRenderer>
+										<fx:Component>
+											<mx:HBox width="100%">
+												<fx:Script>
+													<![CDATA[
+														import mx.events.ListEvent;
+														protected function preselectcombobox1_changeHandler(event:ListEvent):void
+														{
+															data.gender=comboid.selectedItem.data; 
+														}
+														
+													]]>
+												</fx:Script>
+												<utils:PreSelectComboBox width="100%" selectedValue="{data.gender}"    id="comboid" change="preselectcombobox1_changeHandler(event)"   dataProvider="{outerDocument.genderAC}"/>
+												<s:DropDownList includeInLayout="false" visible="false" prompt="Active" selectedIndex="-1"     />
+											</mx:HBox>
+										</fx:Component>
+									</mx:itemRenderer>
+								</mx:DataGridColumn> 
+								<mx:DataGridColumn headerText="Area"  editable="false" >
+									<mx:itemRenderer>
+										<fx:Component>
+											<mx:HBox width="100%">
+												<fx:Script>
+													<![CDATA[
+														import mx.events.ListEvent;
+														protected function preselectcombobox1_changeHandler(event:ListEvent):void
+														{
+															data.area=comboid.selectedItem.data; 
+														}
+														
+													]]>
+												</fx:Script>
+												<utils:PreSelectComboBox  width="100%" selectedValue="{data.area}"    id="comboid" change="preselectcombobox1_changeHandler(event)"   dataProvider="{outerDocument.areaAC}"/>
+												
+												<s:DropDownList visible="false" includeInLayout="false" dataProvider="{outerDocument.accessType}" selectedIndex="-1"/>
+											</mx:HBox>
+										</fx:Component>
+									</mx:itemRenderer>
+								</mx:DataGridColumn>
+							</mx:columns>
+						</mx:DataGrid>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem width="100%">
+						<mx:Spacer  height="10" width="100%"/>	
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem  width="100%"  horizontalAlign="center" >
+						
+						<s:Button  label="Update Scheme" click="updateScheme();" />
+					</mx:GridItem>		
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem width="100%">
+						<mx:Spacer  height="10" width="100%"/>	
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				
+			</mx:Grid>
+		</s:BorderContainer>
+		
+	</mx:Panel>
+</s:NavigatorContent>

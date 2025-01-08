@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" xmlns:s="library://ns.adobe.com/flex/spark">
+<mx:RemoteObject showBusyCursor="true" id="staticServiceRO" destination="MaintenanceServiceManager" fault="Alert.show(event.fault.message)">
+</mx:RemoteObject>
+<mx:Style source="assets/css/ststyle.css"/>
+	<mx:Script>
+		<![CDATA[
+			import VBS.utils.ApplicationUtility;
+			
+			import flash.net.navigateToURL;
+			
+			import mx.controls.Alert;
+			import mx.core.Application;
+			import mx.events.CloseEvent;
+			import mx.utils.StringUtil;
+			
+			 
+		 	private function fnLogout(eventObj:mx.events.CloseEvent):void {
+                    if (eventObj.detail==Alert.YES) {
+                    var userDetails:SharedObject = SharedObject.getLocal("TPS2USRDETLS");	
+               //     staticServiceRO.updateLogout(StaticDataHolder.getSessionId(),StaticDataHolder.getUserId(),StaticDataHolder.getClientIp());
+                    /*var url:String = "javascript:window.opener = self;window.close();"; 
+    	   			var urlReq:URLRequest = new URLRequest(url); 
+	    	    	navigateToURL(urlReq,"_self"); */
+	     	    	ApplicationUtility.signOffApplication();
+                }
+             }
+             
+             private function fnOpenDashboard():void {
+             	var str:String = Application.application.url.toString(); 
+             	var pattern1:RegExp = new RegExp("https://[^/]*/[^/]*/");
+                var url:String = pattern1.exec(str).toString();
+                url = url + "smddashboard.html";
+//                var prop:String = ", 'SMD, 'toolbar=no,fullscreen=yes')";
+//                url = 'javascript:window.open(\'' + url + '\'' + prop;
+                var urlreq:URLRequest = new URLRequest(url);
+                //navigateToURL(urlreq, "_blank");
+                //ExternalInterface.call("window.open", url, "_blank", "fullscreen=1"); 
+                ExternalInterface.call("window.open", url, "_blank");
+             }	  
+		]]> 
+	</mx:Script>
+	<mx:ApplicationControlBar width="100%" height="60" styleName="HeaderBar">
+		<mx:Grid width="100%" height="52">
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem horizontalAlign="left" width="100%" height="100%" verticalAlign="middle" >
+					<s:Label text="Vote Banking Management System"   horizontalCenter="right" verticalAlign="middle" width="100%"   textAlign="center" fontSize="28" fontWeight="bold" fontFamily="Arial"/>
+				</mx:GridItem>
+				<mx:GridItem horizontalAlign="right" width="100%" height="100%" verticalAlign="middle">
+					<mx:Canvas width="450" height="48" id="usrdetails" visible="true">	
+					<mx:VBox verticalGap="1">
+						<mx:Label x="152" y="0" id="user" fontWeight="bold"/>														
+					 <mx:HBox paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0"  horizontalGap="0" >						
+					 	<mx:Label x="152" y="18" id="time" height="18"/>
+					 	<mx:Label id="imgid" text="|" fontWeight="bold" textAlign="center"/>
+					 	<mx:LinkButton id="logout" label="Logout" fontWeight="bold" click='Alert.show("Do you want to close the application?", "Logout", 
+						Alert.YES | Alert.NO, this,fnLogout, null, Alert.OK);'  visible = "true" includeInLayout="true" height="18"/>
+					</mx:HBox>					
+					</mx:VBox> 
+					<mx:Spacer width="100%"/>
+					</mx:Canvas>
+					
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+	</mx:ApplicationControlBar>		
+</mx:Canvas>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" initialize="formGridObject();" >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<!-- This Stroke is used for the callout lines. -->
+		<mx:SolidColorStroke id="callouts" weight="2" color="0x999999" alpha=".8" caps="square"/>
+		
+		<!-- This Stroke is used to separate the wedges in the pie. -->
+		<mx:SolidColorStroke id="radial" weight="1" color="0xFFFFCC" alpha=".3"/>
+		
+		<!-- This Stroke is used for the outer border of the pie. -->
+		<mx:SolidColorStroke id="pieborder" color="0x000000" weight="2" alpha=".5"/>
+		
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.charts.events.ChartItemEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			var viewUserCollection:ArrayCollection=new ArrayCollection;
+			var Schemes:String="Scheme1";
+			[Bindable]public var expenses:ArrayCollection = new ArrayCollection([
+				{Month:"Jan", Profit:2000, Expenses:1500, Amount:450},
+				{Month:"Feb", Profit:1000, Expenses:200, Amount:600},
+				{Month:"Mar", Profit:1520, Expenses:500, Amount:300},
+					{Month:"Apr", Profit:500, Expenses:500, Amount:300},
+					{	Month:"May", Profit:3500, Expenses:500, Amount:300},
+				{	Month:"June", Profit:7500, Expenses:500, Amount:300},
+				{Month:"July", Profit:1300, Expenses:500, Amount:300}
+			]);
+			
+			[Bindable]public var complaints:ArrayCollection = new ArrayCollection([
+				{Month:"Jan",Region:"Lawspet",   Amount:20,Open:10,closed:9,progress:1},
+				{Month:"Feb",Region:"Pakkumudayanpet",  Amount:90,Open:80,closed:10,progress:0},
+				{Month:"Mar",Region:"Thattanchavady",  Amount:247,Open:10,closed:100,progress:90}
+			]);
+			
+			
+			[Bindable]public var complaintsJan:ArrayCollection = new ArrayCollection([
+				{Month:"Jan",Region:"Lawspet",   Amount:20,Open:10,closed:9,progress:1},
+				{Month:"Feb",Region:"Pakkumudayanpet",  Amount:90,Open:80,closed:10,progress:0},
+				{Month:"Mar",Region:"Thattanchavady",  Amount:247,Open:10,closed:100,progress:90}
+			]);
+			
+			public function formGridObject():void{
+				viewUserCollection.addItem({name:"Admin",username:"Admin",pass:"Password@123"});
+				//piechart1.dataProvider=viewUserCollection;
+				 
+				
+			}
+			private function displayGold(data:Object, field:String, index:Number, percentValue:Number):String {
+				var temp:String= (" " + percentValue).substr(0,6);
+				return data.Month + ": " + '\n' + "Total Complaints: " + data.Amount + '\n' + temp + "%";
+			}
+			[Bindable]var flag:Boolean=true;
+			protected function piechart1_itemClickHandler(event:ChartItemEvent):void
+			{
+				//if(event.hitData.chartItem.item.Month=="Jan")
+				if(flag)
+				{
+				piechart1.dataProvider=complaintsJan;
+				  series1.nameField="Region";
+				  series1.field="Open";
+				  flag=false;
+				}else{
+					piechart1.dataProvider=expenses;
+					series1.nameField="Month";
+					series1.field="Amount";
+				  		flag=true;
+				} 
+		
+			}
+
+		]]>
+	</fx:Script>
+	<s:Panel x="0" y="0" width="100%" height="100%" title="Reports">
+		<s:DropDownList x="73" y="9"></s:DropDownList>
+		<s:Label x="10" y="10" text="Year" width="55" height="20" verticalAlign="middle" textAlign="right"/>
+		
+		 
+		
+		<s:BorderContainer x="10" y="38" width="615" height="347">
+			<mx:LineChart x="12" y="27" showDataTips="true" id="linechart1" dataProvider="{expenses}" width="488" height="260">
+				
+				<mx:series>
+					<mx:LineSeries displayName="{Schemes}" yField="Profit"/>
+				</mx:series>
+				<mx:horizontalAxis>
+					<mx:CategoryAxis
+						dataProvider="{expenses}"
+						categoryField="Month"/>
+				</mx:horizontalAxis>
+				
+			</mx:LineChart>
+			<mx:Legend dataProvider="{linechart1}" x="514" y="283"/>
+			<s:Label x="41" y="10" text="Number of Users Benefited through sceme  vs Month&#xd;"/>
+		</s:BorderContainer>
+		<s:BorderContainer x="651" y="38" width="583" height="346">
+			<mx:PieChart  id="piechart1"
+						 width="567"
+						 paddingRight="5" 
+						 paddingLeft="5" 
+						 showDataTips="true" itemClick="piechart1_itemClickHandler(event)"    dataProvider="{complaints}" height="290" y="44">
+				<mx:series>
+					<mx:PieSeries  visible="true" includeInLayout="true" id="series1"  explodeRadius="0.02" nameField="Month" field="Amount"  labelFunction="displayGold"   calloutStroke="{callouts}" 
+								  radialStroke="{radial}" 
+								  stroke="{pieborder}" >
+					
+						<mx:showDataEffect>
+							<mx:SeriesInterpolate duration="1000" />
+						</mx:showDataEffect>
+						 
+						</mx:PieSeries>
+					
+				 
+				</mx:series>
+			</mx:PieChart>
+			<mx:Legend id="legendid" dataProvider="{piechart1}"   x="458" y="166"/>
+			<s:Label x="47" y="9" text="Complaints Recieved (Click the graph to drill down to see the complaints Area wise)&#xd;"/>
+			
+		</s:BorderContainer>
+	</s:Panel>
+</s:NavigatorContent>

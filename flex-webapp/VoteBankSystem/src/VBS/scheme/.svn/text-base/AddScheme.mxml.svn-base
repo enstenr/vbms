@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx"   height="300" xmlns:utils="VBS.utils.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import VBS.domain.VbmsSchemeDTO;
+			
+			import mx.controls.Alert;
+			import mx.controls.DateField;
+			import mx.rpc.events.ResultEvent;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var vbmsSchemeObj:VbmsSchemeDTO=new VbmsSchemeDTO;
+				vbmsSchemeObj.schemeid=0;
+				vbmsSchemeObj.schemename=schemename.text;
+				vbmsSchemeObj.schemedescription=schemdesc.text;
+				
+				var str:String = dtformat.format(schemestdate.text );
+				var str1:String = dtformat.format(schemeenddate.text );
+				var dt:Date = DateField.stringToDate(str, "MM/DD/YYYY");
+				var dt1:Date = DateField.stringToDate(str1, "MM/DD/YYYY");
+				vbmsSchemeObj.startdate=str;
+				vbmsSchemeObj.enddate=str1;
+				vbmsSchemeObj.agelowerlimit=agelower.text;
+				vbmsSchemeObj.ageupperlimit=ageupper.text;
+				vbmsSchemeObj.gender=genderid.selectedItem.data;
+				vbmsSchemeObj.area=areaid.selectedItem.data;
+				var schemeCollection:ArrayCollection=new ArrayCollection;
+				schemeCollection.addItem(vbmsSchemeObj);
+				empRO.saveorUpdateScheme(schemeCollection);
+			}
+			private function saveorUpdateSchemeResult(event:ResultEvent):void{
+				Alert.show("Successfully Added Scheme");
+			}
+		]]>
+	</fx:Script>
+	<fx:Script source="../utils/vbscommon.as"/>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mx:DateFormatter id="dtformat"  formatString="MM/DD/YYYY" />
+
+		<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+			<s:method name="saveorUpdateScheme"        result="saveorUpdateSchemeResult(event)" fault="faultHandler(event);"/>
+	 	</s:RemoteObject>
+	</fx:Declarations>
+	<s:Panel title="Add Scheme"  styleName="stPanel" id="disk"    
+								  width="100%"   >
+		<mx:Form x="-5" y="10" width="100%" height="100%" label="Age Lower Limit">
+		<mx:FormHeading label="Add Scheme"/>
+		<mx:FormItem label="Scheme Name" required="true">
+			<s:TextInput id="schemename"/>
+		</mx:FormItem>
+		<mx:FormItem label="Scheme Description" required="true">
+			<s:TextInput id="schemdesc"/>
+		</mx:FormItem>
+		<mx:FormItem label="Scheme Start Date" required="true">
+			<utils:CustomDateComp  selectableRange="{{rangeStart:new Date()}}" id="schemestdate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Scheme End Date" required="true">
+			<utils:CustomDateComp selectableRange="{{rangeStart:new Date()}}" id="schemeenddate"/>
+		</mx:FormItem>
+		<mx:FormItem label="Age Lower Limit" required="true">
+			<s:TextInput id="agelower"/>
+		</mx:FormItem>
+		<mx:FormItem label="Age Upper Limit" required="true">
+			<s:TextInput id="ageupper"/>
+		</mx:FormItem>
+		<mx:FormItem label="Gender Criteria" required="true">
+			<s:DropDownList id="genderid" dataProvider="{genderAC}" selectedIndex="0" ></s:DropDownList>
+		</mx:FormItem>
+		<mx:FormItem label="Area Criteria" required="true">
+			<s:DropDownList dataProvider="{areaAC}" selectedIndex="0" id="areaid"></s:DropDownList>
+		</mx:FormItem>
+		
+		<mx:FormItem label="Label" > 
+		<s:Button label="Create Scheme" click="button1_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+		</s:Panel>
+</s:NavigatorContent>

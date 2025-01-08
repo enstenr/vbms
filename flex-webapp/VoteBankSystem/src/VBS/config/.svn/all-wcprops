@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/vbms/!svn/ver/12/trunk/vbmswebapp_1/src/VBS/config
+END
+services-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/vbms/!svn/ver/12/trunk/vbmswebapp_1/src/VBS/config/services-config.xml
+END
+remoting-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/vbms/!svn/ver/12/trunk/vbmswebapp_1/src/VBS/config/remoting-config.xml
+END

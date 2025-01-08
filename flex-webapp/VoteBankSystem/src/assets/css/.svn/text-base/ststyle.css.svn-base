@@ -1,0 +1,483 @@
+/* CSS file */
+.MyAppStyle{
+	backgroundColor: #ffffff;
+	backgroundAlpha: 0;
+}
+
+.HeaderBar{
+	backgroundColor: #93b2e0;
+	cornerRadius: 4;
+	dropShadowEnabled: true;	
+}
+
+.loginPanelStyle{
+	headerColors:haloSilver, haloSilver;
+	headerHeight:18;
+	borderThicknessLeft:1;
+	borderThicknessRight:1;
+	cornerRadius:0;
+	alpha:2.0;
+	dropShadowEnabled:false;
+}
+
+.menuStyle{
+   cornerRadius: 4;
+   backgroundColor: #93b2e0;
+   paddingBottom: 0;
+   paddingLeft: 0;
+   paddingRight: 0;
+   paddingTop: 0;
+   tabStyleName: "myTabs";
+   firstTabStyleName: "myTabs";
+   lastTabStyleName: "myTabs";
+   selectedTabTextStyleName: "mySelectedTabs";
+}
+
+.myTabs {
+   cornerRadius: 0;
+   fillAlphas: 1, 1;
+   fillColors: #4469bd, #4469bd;
+   backgroundColor: #93b2e0;
+   color: #ffffff;
+   fontFamily: Arial, Helvetica, sans-serif;
+   fontWeight: bold;
+   fontStyle: normal;
+   fontSize: 11;
+   textRollOverColor: #ffffff;
+}
+
+.mySelectedTabs {
+  color: #492873;
+}
+
+.myLinkBar {
+	color: #092873;
+	fontFamily: Arial, Helvetica, sans-serif;
+	fontSize: 11;
+	fontWeight: bold;
+	textDecoration: underline;
+	dropShadowEnabled: true;
+	rollOverColor: #fffcfc;
+	selectionColor: #fffcfc;
+	textSelectedColor: #492873;
+	disabledColor: red;
+}
+
+.myAppControlBar {
+   fillAlphas: 1, 1;
+   fillColors: #4469bd, #4469bd;
+   backgroundColor: #000099;
+   cornerRadius: 0;
+}
+
+.arrowAdjustStyle{
+	paddingLeft: 0; 
+	paddingRight: 0; 
+	paddingBottom: 0; 
+	paddingTop: 0;
+	horizontalGap: 0;
+	verticalGap: 0;
+}
+
+.dealGridStyle{
+	backgroundColor: #FFFFFF;
+	horizontalGridLineColor: #D8D8D8;
+	verticalGridLineColor: #D8D8D8;
+	alternatingItemColors: #FFFFFF;
+	alpha: 1.0;
+}
+/* CSS file */
+.citiModule {
+   /*padding-left:37px;
+   padding-right:37px;*/
+   backgroundColor: #ffffff;
+   backgroundGradientColors: #ffffff, #ffffff;
+   backgroundGradientAlphas: 0.54, 0.62;
+   themeColor: #999694;
+   fontFamily: Arial;
+   fontSize:11;	
+}
+
+.citiTabNavigator {
+   tabHeight: 24;
+   cornerRadius: 5;
+   horizontalGap: 1;
+   horizontalAlign: left;
+   tabOffset: 3;
+   textIndent: 0;
+   backgroundColor: #ffffff;
+   borderStyle: solid;
+   borderColor: #cccccc;
+   borderThickness: 1;
+   color: #000000;
+   dropShadowEnabled: true;
+   shadowDirection: center;
+   shadowDistance: 2;
+   tabStyleName: "citiTabs";
+   firstTabStyleName: "citiTabs";
+   lastTabStyleName: "citiTabs";
+   selectedTabTextStyleName: "citiSelectedTabs";
+   paddingLeft:10px;
+   paddingRight:10px;
+   fontFamily: Arial;
+   fontSize:11px;	
+}
+
+.citiTabs {
+   cornerRadius: 5;
+   highlightAlphas: 0.36, 0.14;
+   fillAlphas: 0.3, 0.4;
+   backgroundAlpha: 1;
+   borderColor: #cccccc;
+   color: #666666;
+   textRollOverColor: #000000;
+   themeColor: #cccccc;
+   fontFamily: Arial;
+   fontWeight: normal;
+}
+
+.citiSelectedTabs {
+   color: #000000;
+   textRollOverColor: #000000;
+   fontFamily: Arial;
+   fontWeight: bold;
+}
+Grid{
+	paddingTop: 0px;
+	paddingBottom: 0px;
+	paddingLeft: 0px;
+	paddingRight: 0px;
+	horizontalGap: 10px;
+	indicatorGap: 5px;
+}
+.gridItemLabel{
+	horizontal-align:right;	
+}		
+Form {
+	paddingTop: 0px;
+	paddingBottom: 0px;
+	paddingLeft: 0px;
+	paddingRight: 0px;
+	horizontalGap: 10px;
+	indicatorGap: 10px;/*For required gap is increased from 5 to 10 */
+}
+
+.citiFormItem {
+	labelStyleName:customStyle1;
+	fontWeight:bold;
+	fontSize:12px;
+}
+
+.citiDisabledFormItem {
+	labelStyleName:customStyle1;
+	fontWeight:bold;
+	fontSize:12px;
+	backgroundColor:#DDDDDD;
+	cornerRadius:5;
+}
+
+.customStyle1{
+	 textAlign:right;
+}
+.citiTextInput {
+   borderStyle: solid;
+   borderColor: #cccccc;
+   borderThickness: 1px;
+   cornerRadius: 5;
+   textAlign: left;
+   fontFamily: Arial;
+   fontSize: 12;
+   fontWeight: normal;
+   dropShadowEnabled: true;
+   shadowDirection: center;
+   shadowDistance: 0;
+   dropShadowColor: #cccccc;
+   disabledColor: #000000;
+}
+
+.citiComboBox{
+	cornerRadius: 5;
+	fontFamily: Arial;
+	fontSize: 12;
+	
+}
+.citiRendererLinkButton {
+   selectionColor: #ffffff;
+   textDecoration:underline;
+   color:#000066;
+   fontFamily: Arial;
+   fontWeight:normal;
+   fontSize:10;
+   textRollOverColor:#FF0000;
+   disabledColor:#9C9C9C;	
+}
+.citiLinkButton {
+   selectionColor: #ffffff;
+   textDecoration:underline;
+   color:#000066;
+   fontFamily: Arial;
+   fontWeight:normal;
+   fontSize:12;
+   textRollOverColor:#FF0000;
+}
+
+MenuBar {
+   cornerRadius: 0;
+   letterSpacing: 0;
+   backgroundAlpha: 1;
+   highlightAlphas: 0, 0;
+   fontFamily: Arial;
+   fontSize: 12;
+   textIndent: 0;
+}
+
+.citiTitleWindow{
+	headerHeight:30;
+	cornerRadius:"8";
+	borderStyle:solid;
+	borderThickness:2;
+	borderColor:#B0B0B0;
+	backgroundColor:#ffffff;
+	dropShadowColor:#666666;
+	fontFamily:Arial;
+	title-style-name:'popUpTitle';
+	color:#000000;
+	dropShadowEnabled: true;
+	shadowDirection: right;
+	shadowDistance: 3;
+	roundedBottomCorners: true;
+	paddingBottom: 10px;
+	paddingLeft: 1;
+	paddingRight: 1;
+	paddingTop: 5;
+	
+    closeButtonDisabledSkin: ClassReference(null);
+   	closeButtonDownSkin: ClassReference(null);
+   	closeButtonOverSkin: ClassReference(null);
+  	closeButtonUpSkin: ClassReference(null);
+  	fontFamily:Arial;
+  	fontSize:11px;
+  	control-bar-style-name:'titleWinControlBar'
+}
+.popUpTitle{
+	fontSize:16px;
+	font-weight:bold;
+}
+.titleWinControlBar{
+	paddingTop: 10;
+	paddingBottom: 10;
+	horizontalGap: 5;
+}	
+ApplicationControlBar.titlBarFooter
+{
+	padding-bottom: 10px;
+	padding-top: 10px;
+	horizontal-gap : 5px;
+}
+
+.citiListBox{
+	alternatingItemColors: #ffffff, #ffffff;
+ 	borderThickness: 1;
+   	borderColor: #cccccc;
+   	selectionColor: #abd6f4;
+   	fontFamily: Arial;
+   	fontSize: 11;
+   	fontWeight: normal;
+}	
+
+.stDataGrid {
+   alternatingItemColors: #ffffff, #e5f2fb;
+   headerColors: #ffffff, #ededed;
+   borderThickness: 1;
+   borderColor: #cccccc;
+   selectionColor: #abd6f4;
+   headerStyleName: "mydataGridHeaderStyle";
+   fontFamily: Arial;
+   fontWeight: normal;
+   fontSize: 11;
+   color: #000000;
+}
+Label.formHeading
+{
+	fontSize: 16;
+	fontFamily: Arial;
+	color: #000000;
+	fontWeight: normal;
+	paddingBottom: 5;
+	paddingTop: 5;
+}
+
+.mydataGridHeaderStyle {
+   color: #000000;
+   fontFamily: Arial;
+   fontWeight: bold;
+   fontSize: 11;
+   fontStyle: normal;
+   textDecoration: none;
+}
+
+.redButton {
+   fillAlphas: 1.0, 1.0, 1.0, 1.0;
+   fillColors: #ff2a32, #ff2a32, #e30405, #e30405;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   themeColor: #ff0000;
+   fontFamily: Arial;
+   fontSize: 12;
+   disabledColor: #FABABC;
+   paddingLeft: 6px;
+   paddingRight: 6px;
+   cornerRadius: 5;
+   focusAlpha: 1;
+}
+.blueButton {
+   fillAlphas: 1.0, 1.0, 1.0;
+   fillColors: #0276FD, #4876FF, #e30405, #e30405;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   themeColor: #1D7CF2;
+   fontFamily: Arial;
+   fontSize: 12;
+   disabledColor:  #1E90FF;
+   paddingLeft: 6px;
+   paddingRight: 6px;
+   cornerRadius: 5;
+   focusAlpha: 1;
+}
+.blackButton{
+   fillAlphas: 1, 1, 1, 1;
+   fillColors: #9c9c9c, #9c9c9c, #cdcdcd, #cdcdcd;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   themeColor: #9c9c9c;
+   fontFamily: Arial;
+   fontSize: 12;
+   disabledColor: #D8D8D8;
+   paddingLeft: 6px;
+   paddingRight: 6px;
+   cornerRadius: 5;
+   focusAlpha: 1;
+}
+Label.breadCrumbRoot{
+   fontFamily: Arial;
+   fontSize: 10px;
+   color:#000066;
+}
+Label.breadCrumbScreen{
+   fontFamily: Arial;
+   fontSize: 10px;
+   color:#000000;
+}
+Label.subTitle
+{
+	fontFamily: Arial;
+	fontSize: 16;
+	fontWeight: bold;
+	color: #666666;
+}
+Label.sectionTitle
+{
+	fontSize: 16;
+	fontFamily: Arial;
+	color: #666666;
+	fontWeight: bold;
+	kerning: true;
+}
+
+
+.citiDateField {
+	borderStyle: solid;
+   	borderColor: #cccccc;
+   borderThickness: 1px;
+   cornerRadius: 5;
+   textAlign: left;
+   fontFamily: Arial;
+   fontSize: 12;
+   fontWeight: normal;
+   dropShadowEnabled: true;
+   shadowDirection: center;
+   shadowDistance: 0;
+   dropShadowColor: #cccccc;
+   disabledColor: "#000000"
+}
+
+/*Alert{
+	paddingBottom: 5;
+	paddingLeft: 0;
+	paddingRight:0;
+	paddingTop:0;
+	borderThicknessLeft: 2;
+	borderThicknessRight: 2;
+	borderThicknessTop: 0;
+	borderThicknessBottom: 2;
+	borderAlpha: 1;
+	borderColor: #727272;
+	backgroundColor: #DFDFDF;
+	dropShadowColor: #C0C0C0;
+	messageStyleName: "alertMessage";
+	titleStyleName: "alertTitle";
+	buttonStyleName: "alertButton";
+	rounded-bottom-corners: true;	
+}
+
+.alertMessage {
+	fontFamily:Arial;
+    fontSize: 11;
+    fontWeight: normal;
+    color: black;
+}
+
+.alertTitle {
+	fontFamily:Arial;
+    fontSize: 11;
+    color: #ffffff;
+    fontWeight: bold;
+}
+
+.alertButton {
+	fontFamily:Arial;
+    fontWeight: bold;
+    fontSize: 11;
+    color: #000000;
+}*/
+.stPanel{
+	borderThickness: 1;
+	borderStyle: solid;
+	borderColor:#cccccc;
+	cornerRadius: 5;
+	dropShadowEnabled: true;
+	border-alpha:1;
+	title-style-name:"myPanelTitle";
+}
+.myPanelTitle {
+   color: #000000;
+   fontFamily: Arial;
+   fontSize: 14;
+   fontWeight: bold;
+}
+
+.screenBorder1{
+	borderColor:#9C9C9C;
+	borderStyle:solid;
+	borderThickness:1;
+	paddingTop:10px;
+	paddingBottom:10px;
+	paddingLeft:10px;
+	paddingRight:10px;	
+}	
+.screenBorder{
+	borderColor:#898484;
+	cornerRadius:5;
+	borderStyle:solid;
+	borderThickness:1;
+	paddingTop:10px;
+	paddingBottom:10px;
+	paddingLeft:10px;
+	paddingRight:10px;
+	dropShadowEnabled: true;
+   	shadowDirection: center;
+  	shadowDistance: 2;	
+}
+.linkButtonStyles {
+	skin: ClassReference("assets.css.CustomLinkButtonSkin");
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas  xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			xmlns:s="library://ns.adobe.com/flex/spark" 
+			xmlns:mx="library://ns.adobe.com/flex/mx" width="100%"    height="100%"     >
+	<fx:Declarations>
+		<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+			<s:method name="fetchSchemes"             result="fetchSchemeResult(event);" fault="faultHandler(event);"/>
+			 
+		</s:RemoteObject>
+	</fx:Declarations>
+	<fx:Script source="../utils/vbscommon.as"/> 
+	<fx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.ResultEvent;
+			
+			public function fetchScheme():void{
+				
+				empRO.fetchSchemes(null);
+			}
+			private function fetchSchemeResult(event:ResultEvent):void{
+				
+				
+				schemeAC=event.result as ArrayCollection;
+				
+			}
+			import spark.components.Application;
+			[Bindable] var schemeAC:ArrayCollection=new ArrayCollection;
+			public function openPopUp():void{
+				var startschemePopUp:StartSchemePopup;
+				startschemePopUp=StartSchemePopup(PopUpManager.createPopUp(this,StartSchemePopup,true));
+				startschemePopUp.width=this.parentApplication.width;
+				startschemePopUp.height=this.parentApplication.height;
+				startschemePopUp.schemeAC=schemeAC;
+			}
+		]]>
+	</fx:Script>
+	<mx:Panel title="Start Scheme"  styleName="stPanel" id="disk" layout="vertical"  
+			  horizontalGap="0" verticalGap="0" paddingBottom="1" paddingLeft="3" paddingRight="3"    width="100%" height="100%" >
+		<s:BorderContainer width="100%"   id="viewVoter" styleName="stPanel" visible="true"  includeInLayout="true" dropShadowVisible="true">
+			<mx:Grid width="100%">
+				<mx:GridRow width="100%"> 
+					<mx:GridItem width="100%">
+						<mx:Spacer  height="10" width="100%"/>	
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem  width="100%"  >
+						
+						<s:Button  label="Start Scheme" click="openPopUp();" />
+					</mx:GridItem>		
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+				</mx:GridRow>
+				
+			</mx:Grid>
+		</s:BorderContainer>
+		
+	</mx:Panel>
+</mx:Canvas>

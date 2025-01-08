@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"    xmlns:local="*" xmlns:VBS="VBS.*" xmlns:user="VBS.user.*" xmlns:reports="VBS.reports.*" initialize="showStack();" xmlns:voter="VBS.voter.*" xmlns:scheme="VBS.scheme.*" xmlns:complaint="VBS.complaint.*" xmlns:startscheme="VBS.startscheme.*" width="100%" height="800">
+	 
+	<fx:Declarations>
+		<mx:DateFormatter id="dfconv" formatString="EEEE, DD MMMM YYYY L:NN:SS A"/>
+		
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style source="assets/css/ststyle.css"/>
+	
+	<fx:Script>
+		<![CDATA[
+			import VBS.utils.StaticDataHolder;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.ItemClickEvent;
+		private var timer:Timer;
+		public function init( menuCollection:ArrayCollection):void{
+			
+			for(var count:int=0;count<menuCollection.length;count++){
+				var menuString:String=menuCollection.getItemAt(count) as String;
+				if(SubView.getChildByName(menuString) != null)
+				{
+					SubView.removeChild(SubView.getChildByName(menuString));
+				}
+				
+				
+			}
+			
+			
+			
+		header.time.text = getdate();	
+		header.user.text=StaticDataHolder.getUserName();
+		this.timer = new Timer(1000);
+		this.timer.addEventListener(TimerEvent.TIMER, this.resetNow);
+		this.timer.start();
+		
+		 
+		}
+		
+		private function resetNow(event:TimerEvent):void {
+		header.time.text = getdate();
+		}
+		
+		//Get Date
+		public function getdate():String{
+		var myDate:Date = new Date();
+		return dfconv.format(myDate);
+		}
+			
+			public function showStack():void{
+				clearAllViewStacks();
+				if(SubView.selectedChild.name == "user"){
+					
+					userviewitems.visible = true;
+					userviewitems.includeInLayout = true;
+					userviewitems.selectedIndex = 0;
+				}else if(SubView.selectedChild.name == "voter"){
+					 
+					voterviewitems.visible = true;
+					voterviewitems.includeInLayout = true;
+					voterviewitems.selectedIndex = 0;
+				}else if(SubView.selectedChild.name == "scheme"){
+					  
+					schemeviewitems.visible = true;
+					schemeviewitems.includeInLayout = true;
+					schemeviewitems.selectedIndex = 0;
+				}else if(SubView.selectedChild.name == "complaint"){
+					 
+					complaintviewitems.visible = true;
+					complaintviewitems.includeInLayout = true;
+					complaintviewitems.selectedIndex = 0;
+				}else if(SubView.selectedChild.name == "stscheme"){
+					  
+					stschemeviewtems.visible = true;
+					stschemeviewtems.includeInLayout = true;
+					stschemeviewtems.selectedIndex = 0;
+				}
+				 
+				else if(SubView.selectedChild.name == "streports"){
+					
+					streportsviewtems.visible = true;
+					streportsviewtems.includeInLayout = true;
+					streportsviewtems.selectedIndex = 0;
+					schemeid.formGridObject();
+				}
+				
+			}
+			
+			public function clearAllViewStacks():void{
+				userviewitems.visible = false;
+				userviewitems.includeInLayout = false;
+				 
+				schemeviewitems.visible=false;
+				schemeviewitems.includeInLayout=false;
+				
+				voterviewitems.visible=false;
+				voterviewitems.includeInLayout=false;
+				
+				complaintviewitems.visible=false;
+				complaintviewitems.includeInLayout=false;
+				
+				stschemeviewtems.visible=false;
+				stschemeviewtems.includeInLayout=false;
+				
+				streportsviewtems.visible=false;
+				streportsviewtems.includeInLayout=false;
+				 
+				
+			}
+			public function userClickHandler():void{
+			 
+				if(userItems.selectedIndex==1){
+					viewuserid.formGridObject();
+				}
+			}
+
+			protected function schemeItems_itemClickHandler(event:ItemClickEvent):void
+			{
+				if(schemeItems.selectedIndex==1)
+					modifyschemeid.fetchScheme();
+			}
+
+
+			protected function complaintItems_itemClickHandler(event:ItemClickEvent):void
+			{
+				if(complaintItems.selectedIndex==1)
+					modifycomplaintid.fetchComplaints();
+			}
+
+
+			protected function streportsitems_itemClickHandler(event:ItemClickEvent):void
+			{
+				 
+				schemeid.formGridObject();
+			}
+
+
+			protected function stschemeitems_itemClickHandler(event:ItemClickEvent):void
+			{
+				startscheme.fetchScheme();
+			}
+
+		]]>
+	</fx:Script>
+	
+	<mx:Grid width="100%" height="100%"  >
+		
+		<mx:GridRow width="100%"  height="62">
+			<mx:GridItem width="100%"><local:STHeader id="header" height="62"/></mx:GridItem>
+		</mx:GridRow>
+		<mx:GridRow width="100%"  height="90%" >
+			<mx:GridItem width="100%" height="100%"  >
+				<mx:VBox id="AppContent" height="100%" width="100%"  verticalGap="0" 
+						 creationPolicy="auto" paddingLeft="5" paddingRight="5" visible="true" includeInLayout="true"  >
+					<mx:ApplicationControlBar paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" width="100%" styleName="myAppControlBar">
+						<mx:TabNavigator id="SubView" styleName="citiTabNavigator" width="100%"   change="showStack();" >
+							<mx:Canvas id="user" label="System User" width="100%" height="100%">
+								<mx:LinkBar   styleName="myLinkBar"  itemClick="userClickHandler();"   linkButtonStyleName="linkButtonStyles" id="userItems" dataProvider="{userviewitems}"   />
+							</mx:Canvas>
+							
+							<mx:Canvas id="voter" label="Voter"  width="100%" >
+								<mx:LinkBar styleName="myLinkBar"    linkButtonStyleName="linkButtonStyles"    id="voterItems" dataProvider="{voterviewitems}"   />
+							</mx:Canvas>
+							<mx:Canvas id="scheme" label="Scheme"  >
+								<mx:LinkBar styleName="myLinkBar"   itemClick="schemeItems_itemClickHandler(event)"  linkButtonStyleName="linkButtonStyles"    id="schemeItems" dataProvider="{schemeviewitems}"   />
+							</mx:Canvas>
+							<mx:Canvas id="complaint" label="Complaint"  >
+								<mx:LinkBar  styleName="myLinkBar"   itemClick="complaintItems_itemClickHandler(event)"  linkButtonStyleName="linkButtonStyles"   id="complaintItems" dataProvider="{complaintviewitems}"   />
+							</mx:Canvas>
+							<mx:Canvas id="stscheme" label="Start Scheme"  >
+								<mx:LinkBar styleName="myLinkBar"    linkButtonStyleName="linkButtonStyles"  id="stschemeitems" dataProvider="{stschemeviewtems}"   itemClick="stschemeitems_itemClickHandler(event)" />
+							</mx:Canvas>
+							<mx:Canvas id="streports" label="Reports"  >
+								<mx:LinkBar styleName="myLinkBar"    linkButtonStyleName="linkButtonStyles"  id="streportsitems" dataProvider="{streportsviewtems}" itemClick="streportsitems_itemClickHandler(event)"   />
+							</mx:Canvas>
+						</mx:TabNavigator>	 
+					</mx:ApplicationControlBar>
+					 
+					<mx:ViewStack id="userviewitems"    width="100%" paddingTop="30" paddingBottom="2"    visible="false" includeInLayout="false" resizeToContent="true"   height="375">
+						
+						<user:AddUser width="100%" height="100%" id="adduserid"  label="Add User"  />
+					 	<user:viewUser width="100%"  height="100%" id="viewuserid"   label="Modify User"  />
+					 
+					</mx:ViewStack>
+					
+					
+					<mx:ViewStack id="voterviewitems"       width="100%" paddingTop="30" paddingBottom="5"    visible="true" includeInLayout="true"     resizeToContent="true"  height="516">
+						<voter:AddVoter    height="100%"   width="100%"    label="Add Voter"/>
+						<voter:modifyVoter    height="100%"  width="100%"   label="View/Modify Voter"/>
+					 	 
+						
+					</mx:ViewStack>
+					
+					
+					<mx:ViewStack id="schemeviewitems"  height="100%" width="100%"   paddingTop="30" paddingBottom="5"    visible="false" includeInLayout="false"    >
+						<scheme:AddScheme id="createschemeid"  height="100%" width="100%"   label="Create Scheme"/>
+						<scheme:ModifyScheme  id="modifyschemeid"  height="100%" width="100%"  label="View/Modify Scheme"/>
+						 
+					</mx:ViewStack>
+					
+					
+					<mx:ViewStack id="complaintviewitems"  height="100%" width="100%"    paddingTop="30" paddingBottom="5"    visible="false" includeInLayout="false"   >
+						<complaint:CreateComplaint height="100%" width="100%"   label="Create Complaint"/>
+						<complaint:ModifyComplaint id="modifycomplaintid" height="100%" width="100%"   label="View/Modify Complaint"  />
+						 
+					</mx:ViewStack>
+					
+					<mx:ViewStack id="stschemeviewtems" height="100%" width="100%"   paddingTop="30" paddingBottom="5"    visible="false" includeInLayout="false"   >
+						 <startscheme:StartScheme id="startscheme" width="100%" label="Start Scheme"  />
+				 	</mx:ViewStack>
+					
+					<mx:ViewStack id="streportsviewtems"  height="100%" width="100%"  paddingTop="30" paddingBottom="5"    visible="false" includeInLayout="false"    >
+						<reports:SchemeReport  id="schemeid" height="100%" width="100%"  label="Scheme Reports" />
+					 
+				 	</mx:ViewStack>
+					
+					
+				</mx:VBox>
+			</mx:GridItem>
+		</mx:GridRow>
+		<mx:GridRow width="100%" height="5%">
+			<mx:GridItem width="100%"><local:STFooter width="100%" height="10"/></mx:GridItem>
+		</mx:GridRow>
+	</mx:Grid>
+</mx:Canvas>

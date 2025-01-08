@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas  xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			xmlns:s="library://ns.adobe.com/flex/spark" 
+			xmlns:mx="library://ns.adobe.com/flex/mx" width="100%"    height="100%"     >
+	<fx:Script source="../utils/vbscommon.as"/> 
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+			<s:method name="saveorUpdateComlaints"        result="saveorUpdateComplaintResult(event)" fault="faultHandler(event);"/>
+			<s:method name="fetchComplaints"        result="fetchComplaintResult(event)" fault="faultHandler(event);"/>
+		</s:RemoteObject>
+	</fx:Declarations>
+<fx:Script>
+	<![CDATA[
+		import VBS.complaint.popup.ComplaintChangePopup;
+		import VBS.domain.VbmsComplaintDTO;
+		
+		import mx.events.CloseEvent;
+		import mx.managers.PopUpManager;
+		import mx.rpc.events.ResultEvent;
+		
+		import spark.events.TextOperationEvent;
+		
+		public function openStatusPop():void{
+			var complaintChangePopup:ComplaintChangePopup;
+			complaintChangePopup=ComplaintChangePopup(PopUpManager.createPopUp(this,ComplaintChangePopup,true));
+			complaintChangePopup.complaintDTO=dg.selectedItem as VbmsComplaintDTO;
+			complaintChangePopup.addEventListener("closeEvent",refreshPage);
+			PopUpManager.centerPopUp(complaintChangePopup);
+			
+		}
+		private function refreshPage(event:Event):void{
+			fetchComplaints();
+		}
+		public function fetchComplaints():void{
+			empRO.fetchComplaints(null);
+		}
+		private function saveorUpdateComplaintResult(event:ResultEvent):void{
+			Alert.show("Successfully Added Complaint");
+		}
+		private function fetchComplaintResult(event:ResultEvent):void{
+			complaintAC=event.result as ArrayCollection;
+			//complaintAC.refresh();
+		}
+
+		protected function button1_clickHandler(event:MouseEvent):void
+		{
+			empRO.saveorUpdateComlaints(complaintAC);
+		}
+
+
+		protected function textinput1_changeHandler(event:TextOperationEvent):void
+		{
+			complaintAC.filterFunction=myFilterFunction;
+			complaintAC.refresh();
+		}
+		public function myFilterFunction(item:Object):Boolean{
+			if((item as VbmsComplaintDTO).desc.toUpperCase().indexOf(areaid.text.toUpperCase())>=0)
+				return true;
+			else 
+				return false;
+			
+		}
+
+	]]>
+</fx:Script>	
+	<mx:Panel title="View Complaints"  styleName="stPanel" id="disk" layout="vertical"  
+			  horizontalGap="0" verticalGap="0" paddingBottom="1" paddingLeft="3" paddingRight="3"    width="100%" height="100%" >
+		<s:BorderContainer width="100%"   id="viewVoter" styleName="stPanel" visible="true"  includeInLayout="true" dropShadowVisible="true">
+			<mx:Grid width="100%">
+				<mx:GridRow width="100%"> 
+					<mx:GridItem width="100%">
+						<mx:Spacer  height="10" width="100%"/>	
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem width="100%" horizontalAlign="center">
+						<mx:Label text="Complaint Desc" x="10" y="10"/>
+						<s:TextInput  x="83" y="10" id="areaid" change="textinput1_changeHandler(event)"/>
+						
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%" >
+					<mx:GridItem width="100%" horizontalAlign="center">
+						
+						
+						<mx:DataGrid width="80%"  editable="true" rowCount="10"   draggableColumns="true" id="dg" dataProvider="{complaintAC}">
+							<mx:columns>
+								<mx:DataGridColumn headerText="Select" width="48" visible="false" editable="false">
+									<mx:itemRenderer>
+										<fx:Component>
+											<mx:HBox horizontalAlign="center">
+												<mx:CheckBox />
+											</mx:HBox>
+										</fx:Component>
+									</mx:itemRenderer>
+								</mx:DataGridColumn> 
+								<mx:DataGridColumn headerText="Complaint Number"    dataField="complaintid" width="70" editable="false"/>
+								<mx:DataGridColumn headerText="Complaint Description" dataField="desc" width="350"  wordWrap="true"  editable="false"/>
+								<mx:DataGridColumn headerText="Complaint Created On" dataField="created_dttm" width="120"  wordWrap="true"  editable="false"/>
+								<mx:DataGridColumn headerText="Complaint Updated On" dataField="updated_dttm" width="120"  wordWrap="true"  editable="false"/>
+								<mx:DataGridColumn headerText="Status" dataField="status" width="80"  wordWrap="true"  editable="false"/>
+								<mx:DataGridColumn headerText="Change Status" width="80" editable="false" >
+									<mx:itemRenderer>
+										<fx:Component >
+											<mx:HBox horizontalAlign="center" width="100%"> 
+											<s:Button label="Change Status"  click="outerDocument.openStatusPop();" />
+											</mx:HBox>
+										</fx:Component>
+									</mx:itemRenderer>
+								</mx:DataGridColumn>
+							</mx:columns>
+						</mx:DataGrid>
+					</mx:GridItem>
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem width="100%">
+						<mx:Spacer  height="10" width="100%"/>	
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem  width="100%"  horizontalAlign="center" >
+						
+						<s:Button  label="Update Voter" click="button1_clickHandler(event)" />
+					</mx:GridItem>		
+				</mx:GridRow>
+				<mx:GridRow width="100%">
+					<mx:GridItem width="100%">
+						<mx:Spacer  height="10" width="100%"/>	
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				
+			</mx:Grid>
+		</s:BorderContainer>
+		
+	</mx:Panel>
+</mx:Canvas>

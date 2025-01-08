@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" focusEnabled="false">
+	<mx:VBox width="100%" focusEnabled="true"  paddingTop="15">
+		<mx:HBox width="100%" paddingLeft="5" paddingRight="5">
+			<mx:Text leading="0" fontFamily="arial, helvetica, sans-serif" fontSize="10" color="#666666" textAlign="left" textIndent="0">
+			</mx:Text>
+		</mx:HBox>
+		<mx:HBox width="100%" paddingLeft="5" paddingRight="5" paddingTop="0">
+			<mx:Text leading="0"  width="100%" fontFamily="arial, helvetica, sans-serif" fontSize="10" color="#666666" textAlign="left" textIndent="0">
+			</mx:Text>
+		</mx:HBox>
+		<mx:HBox  width="100%" paddingLeft="5" paddingRight="5" verticalGap="0" paddingTop="0" paddingBottom="0">
+			<mx:VBox  width="100%" verticalGap="0" paddingTop="0" paddingBottom="0">
+				<mx:Text width="100%" leading="0" text="Copyrights. All rights Reserved.The site is Developed and Maintained by eSales Technologies.All the softwares and other Products Related are owned by eSales.">
+				</mx:Text>	
+			</mx:VBox>
+			<mx:VBox  width="100%" verticalGap="0" paddingBottom="0" paddingTop="0">
+				<mx:Text leading="0" width="100%" textAlign="right" paddingBottom="0" paddingTop="0"><mx:htmlText><![CDATA[CopyRights ]]></mx:htmlText></mx:Text>
+			
+			</mx:VBox>
+		</mx:HBox>
+	</mx:VBox>
+</mx:Canvas>

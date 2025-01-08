@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx"         close="PopUpManager.removePopUp(this);" >
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.ResultEvent;
+			[Bindable]var schemeAC:ArrayCollection;
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+	</fx:Declarations>
+	<s:Panel title="Scheme Running" color="green"  styleName="stPanel" id="disk"    
+								  width="100%"   >
+		 
+		<s:BorderContainer x="10" y="10" width="90%" height="180">
+			<mx:Form x="10" y="10" width="70%" height="158">
+				<mx:FormHeading label="Voter Details"/>
+				<mx:FormItem label="Voter Name">
+					<s:TextInput/>
+				</mx:FormItem>
+				<mx:FormItem label="Voter Card">
+					<s:TextInput/>
+				</mx:FormItem>
+				<mx:FormItem label="Voter Address">
+					<s:TextInput/>
+				</mx:FormItem>
+			</mx:Form>
+			<s:BorderContainer x="406" y="12" width="18%" height="150">
+				
+			</s:BorderContainer>
+		</s:BorderContainer>
+		</s:Panel>
+	<s:DropDownList x="123" y="223"  dataProvider="{schemeAC}" labelField="schemename" ></s:DropDownList>
+	<s:Label x="10" y="232" text="Available Schemes&#xd;"/>
+	<s:Button x="258" y="242" label="Confirm"/>
+	
+</s:TitleWindow>

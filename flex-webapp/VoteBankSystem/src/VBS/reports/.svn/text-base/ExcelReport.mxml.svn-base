@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" xmlns:utils="VBS.utils.*"  title="Report">
+	
+
+	<fx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="schemestate"/>
+	</s:states>
+
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:BorderContainer width="100%" height="100%">
+		<s:VGroup width="100%"  >
+			<s:HGroup width="100%" horizontalAlign="left" verticalAlign="contentJustify" height="55">
+				<mx:Spacer width="74" />
+				<s:Label text="Criteria" width="330" height="24" fontSize="15" verticalAlign="middle" textAlign="left"/>
+			</s:HGroup>
+		
+<s:HGroup width="100%" >
+	<s:Label x="14" y="10" text="Date From&#xd;" width="129" height="21" verticalAlign="middle" textAlign="right"/>
+	<mx:DateField x="103" y="10" width="114"/>
+	<s:Label x="215" y="10" text="Date To&#xd;" width="81" height="21" verticalAlign="middle" textAlign="right"/>
+	<mx:DateField x="304" y="10"/>
+	<mx:Spacer width="74" />
+</s:HGroup>
+
+<s:HGroup width="100%" id="complaintid"  includeIn="State1">
+ 	<s:Label x="10" y="50" text="Complaint Type" width="130" height="30" textAlign="right" verticalAlign="middle"/>
+	<s:DropDownList x="103" y="55"></s:DropDownList>
+ </s:HGroup>
+
+			<s:HGroup width="100%" id="schemeid"  includeIn="schemestate">
+				<s:Label x="10" y="50" text="Scheme Name" width="130" height="30" textAlign="right" verticalAlign="middle"/>
+				<s:DropDownList x="103" y="55"></s:DropDownList>
+			</s:HGroup>
+
+
+<s:HGroup horizontalAlign="left" width="100%">
+	<utils:LinkButton label="Download"/>
+</s:HGroup>
+	
+		
+			<s:HGroup width="100%"  horizontalAlign="center">
+				<s:Button x="226" y="220" label="Close" click="button1_clickHandler(event)"/>
+			</s:HGroup>
+		</s:VGroup>
+	
+</s:BorderContainer>
+</s:Panel>

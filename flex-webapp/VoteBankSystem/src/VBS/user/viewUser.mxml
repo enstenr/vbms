@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="400"    xmlns:utils="VBS.utils.*"  >
+	<fx:Script source="../utils/vbscommon.as"/> 
+	<fx:Script>
+		<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			private function fetchUserResult(event:ResultEvent):void{
+				viewUserCollection=event.result as ArrayCollection;
+			}
+			
+			private function saveorUpdateUserResult(event:ResultEvent):void{
+				Alert.show("Successfully Updated User","VBMS Message",4);
+			//	viewUserCollection=event.result as ArrayCollection;
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+ 			<s:method name="fetchUser"             result="fetchUserResult(event);" fault="faultHandler(event);"/>
+			<s:method name="saveorUpdateUser"      result="saveorUpdateUserResult(event)"  fault="faultHandler(event);"/>
+			
+		</s:RemoteObject>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import VBS.domain.VbmsUserDTO;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			[Bindable]var viewUserCollection:ArrayCollection=new ArrayCollection;
+			public function formGridObject():void{
+				empRO.fetchUser(null);
+			}
+			 
+			public function updateUserList():void{
+				var selectedcollection:ArrayCollection=new ArrayCollection;
+				for(var count:int=0;count<viewUserCollection.length;count++){
+					if((viewUserCollection.getItemAt(count) as VbmsUserDTO).isSelected){
+						selectedcollection.addItem(viewUserCollection.getItemAt(count));
+					 }
+				}
+				if(selectedcollection==null || selectedcollection.length==0)
+				{	Alert.show("Please Select a Record ","VBMS Message",4);
+					return;
+							 
+				}
+				empRO.saveorUpdateUser(selectedcollection);
+			}
+			public function filterGrid():void{
+				viewUserCollection.filterFunction=myFilterFunction;
+				viewUserCollection.refresh();
+			}
+			public function myFilterFunction(item:Object):Boolean{
+				if((item as VbmsUserDTO).userName.toUpperCase().indexOf(nameid.text.toUpperCase())>=0 &&(item as VbmsUserDTO).userLogin.toUpperCase().indexOf(loginid.text.toUpperCase())>=0
+				)
+					return true;
+				else 
+					return false;
+				
+			}
+		]]>
+	</fx:Script>
+	<s:Panel title="View/Modify"    id="disk"  styleName="stPanel" width="100%"     >
+		<mx:VBox width="100%" height="100%">        
+			<mx:HBox width="100%" horizontalAlign="center" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0" height="50">
+				<mx:Grid width="100%" height="45">
+					<mx:GridRow>
+ 					</mx:GridRow>
+					<mx:GridRow  width="100%" horizontalAlign="center" >
+ 						<mx:GridItem  >
+ 								<s:Label x="10" y="24" text="User Name"  verticalAlign="middle" width="80" height="22"/>
+								<s:TextInput width="87" id="nameid" change="filterGrid();" />
+							 
+								<s:Label x="10" y="24" text="Login Name"  verticalAlign="middle" width="80" height="22"/>
+								<s:TextInput width="87" id="loginid" change="filterGrid();" />
+							
+								<s:Button x="144" y="19" label="Reset" click="formGridObject();"/>
+						</mx:GridItem>
+ 					</mx:GridRow>
+				</mx:Grid>
+		</mx:HBox>
+	<mx:HBox width="100%"  horizontalAlign="center">
+	 		
+	<mx:DataGrid width="80%" rowCount="10" editable="true" wordWrap="true"  draggableColumns="true" id="userGrid" dataProvider="{viewUserCollection}">
+		<mx:columns>
+			 <mx:DataGridColumn headerText="Select" width="18" editable="false" >
+				 <mx:itemRenderer>
+					 <fx:Component>
+						 <mx:HBox horizontalAlign="center">
+							 
+							 <fx:Script>
+								 <![CDATA[
+									 override public function  set data(value:Object):void {
+										 super.data=value;
+										 checkdel.selected=data.isSelected;
+									 }
+									 public function deletedClick():void{
+										 data.isSelected=(checkdel.selected?'N':'Y');
+									 }
+								 ]]>
+							 </fx:Script>
+							 <mx:CheckBox   id="checkdel" selected="false" click="deletedClick();"	   />						
+						 </mx:HBox>
+						 
+					 </fx:Component>
+				 </mx:itemRenderer>
+			</mx:DataGridColumn> 
+			<mx:DataGridColumn headerText="User Name" dataField="userName" width="100" editable="true" />
+			<mx:DataGridColumn headerText="Login Name" dataField="userLogin" width="100" editable="true"  />
+			<mx:DataGridColumn headerText="Passord" dataField="userPassword" width="100"  editable="true"/>
+			 <mx:DataGridColumn headerText="Status" width="38" editable="false"  dataField="status" >
+				<mx:itemRenderer>
+					<fx:Component>
+						<mx:HBox width="100%">
+							<fx:Script>
+								<![CDATA[
+									import mx.events.ListEvent;
+									override public function  set data(value:Object):void {
+										super.data=value;
+										
+									}
+						 			protected function preselectcombobox1_changeHandler(event:ListEvent):void
+									{
+										 data.status=comboid.selectedItem.data; 
+									}
+
+								]]>
+							</fx:Script>
+						<utils:PreSelectComboBox width="100%" selectedValue="{data.status}"    id="comboid" change="preselectcombobox1_changeHandler(event)"   dataProvider="{outerDocument.statusAC}"/>
+						<s:DropDownList includeInLayout="false" visible="false" prompt="Active" selectedIndex="-1"     />
+						</mx:HBox>
+					</fx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn> 
+			<mx:DataGridColumn headerText="Access Type" width="38" editable="false" >
+				<mx:itemRenderer>
+					<fx:Component>
+						<mx:HBox width="100%">
+							<fx:Script>
+							<![CDATA[
+							import mx.events.ListEvent;
+								override public function  set data(value:Object):void {
+									super.data=value;
+									 
+								}
+							protected function preselectcombobox1_changeHandler(event:ListEvent):void
+							{
+							data.accessType=comboid.selectedItem.data; 
+							}
+							
+							]]>
+							</fx:Script>
+							<utils:PreSelectComboBox  width="100%" selectedValue="{data.accessType}"    id="comboid" change="preselectcombobox1_changeHandler(event)"   dataProvider="{outerDocument.accessType}"/>
+							
+							 
+						</mx:HBox>
+					</fx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	</mx:HBox>
+	<mx:HBox width="100%" horizontalAlign="center">
+		<s:Button x="147" y="252" label="Update Selected" click="updateUserList();"/>		
+	</mx:HBox>
+
+	
+			</mx:VBox>
+		
+		</s:Panel> 
+</s:NavigatorContent>

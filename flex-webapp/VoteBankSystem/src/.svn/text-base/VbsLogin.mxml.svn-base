@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"   minWidth="955" minHeight="700"    xmlns:local="*" preloader="preloader.CustomPreLoader"     >
+	 
+	 
+	<fx:Script> 
+		<![CDATA[ 
+			import VBS.domain.VbmsUserDTO;
+			import VBS.utils.StaticDataHolder;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.messaging.ChannelSet;
+			import mx.messaging.channels.AMFChannel;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			private function loginResult(event:ResultEvent):void{
+				var resultObj:VbmsUserDTO=event.result as VbmsUserDTO;
+				 var staticDataHolder:StaticDataHolder=new StaticDataHolder;
+				 
+				 if(password.text!=resultObj.userPassword)
+				 {
+					 Alert.show("Invalid Password","VBMS Message",4);
+					 return;
+				 }
+				StaticDataHolder.setUserName(resultObj.userName);
+				empRO.getUserTabs(resultObj);
+				  
+			} 
+			
+			private function userTabResult(event:ResultEvent):void{
+				var menuRemoveCollection:ArrayCollection=event.result as ArrayCollection;
+				
+				spgMain.init(menuRemoveCollection);
+				loginPanel.visible=false;
+				loginPanel.includeInLayout=false;
+				
+				spgMain.visible=true;
+				spgMain.includeInLayout=true;
+			}
+			private function login():void{
+				var vbmsUserObj:VbmsUserDTO=new VbmsUserDTO;
+				vbmsUserObj.userLogin=username.text;
+			 	empRO.validateLogin(vbmsUserObj);
+				 
+			}
+			private function faultHandler(event:FaultEvent):void{
+				Alert.show(event.fault.faultString);
+			}
+		]]> 
+	</fx:Script>
+	 
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		 
+		 <s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+			 <s:method name="validateLogin"      result="loginResult(event)" fault="faultHandler(event);"/>
+			 <s:method name="getUserTabs" result="userTabResult(event);" fault="faultHandler(event);"/>
+		 </s:RemoteObject>
+		 
+			
+		<s:Sequence  target="{spgMain}">
+			<s:Rotate3D targets="{[spgMain]}" duration="4000" angleYFrom="0"
+						angleYTo="360"/>
+			<mx:Glow duration="3000" color="#ffff00"/>
+		</s:Sequence>
+	</fx:Declarations>
+	<s:Panel id="loginPanel"  title="Vote Bank Management System " textAlign="center" width="406" height="274" y="160.6" x="425.6" chromeColor="#699FDC">
+		<mx:Form x="49.65" y="23.35" width="305.35" height="183.65">
+			<mx:FormItem label="UserName">
+				<s:TextInput id="username" text="Admin" textAlign="left"/>
+			</mx:FormItem>
+			<mx:FormItem label="Password">
+				<s:TextInput id="password" textAlign="left" text="Admin" displayAsPassword="true"/>
+			</mx:FormItem>
+			<mx:FormItem >
+				<s:Button  label="Login" click="login();"  />
+			</mx:FormItem> 
+		</mx:Form>
+		
+	</s:Panel>
+	<local:VoteBankSystem   width="100%"  height="785" visible="false" includeInLayout="false" id="spgMain"     />
+	
+		 
+</s:Application>

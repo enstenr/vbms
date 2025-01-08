@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/vbms/!svn/ver/12/trunk/vbmswebapp_1/src/VBS/domain
+END
+VbmsUserDTO.as
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/vbms/!svn/ver/19/trunk/vbmswebapp_1/src/VBS/domain/VbmsUserDTO.as
+END
+VbmsVoterDTO.as
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/vbms/!svn/ver/19/trunk/vbmswebapp_1/src/VBS/domain/VbmsVoterDTO.as
+END
+VbmsSchemeDTO.as
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/vbms/!svn/ver/19/trunk/vbmswebapp_1/src/VBS/domain/VbmsSchemeDTO.as
+END
+VbmsComplaintDTO.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/vbms/!svn/ver/19/trunk/vbmswebapp_1/src/VBS/domain/VbmsComplaintDTO.as
+END

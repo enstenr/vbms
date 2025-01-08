@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" xmlns:utils="VBS.utils.*"  title="Report">
+	
+	<fx:Declarations>
+		<mx:DateFormatter id="dateformat" formatString="DD-MMM-YYYY HH:NN:SS"/> 
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+			
+			<s:method name="fetchComplaintsReport"        result="fetchComplaintResult(event)" fault="faultHandler(event);"/>
+		</s:RemoteObject>
+	</fx:Declarations>
+	<fx:Script source="/../../VBS/utils/vbscommon.as"/>
+	<fx:Script>
+		<![CDATA[
+			import VBS.domain.VbmsComplaintDTO;
+			
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.formatters.DateFormatter;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.ResultEvent;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+
+			protected function todate_changeHandler(event:CalendarLayoutChangeEvent):void
+			{
+				 fromdate.selectableRange={rangeEnd:DateFormatter.parseDateString(todate.text)};
+			}
+
+
+			protected function fromdate_changeHandler(event:CalendarLayoutChangeEvent):void
+			{
+				todate.selectableRange={rangeStart:DateFormatter.parseDateString(fromdate.text)};
+			}
+
+
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				 var complaintObj:VbmsComplaintDTO=new VbmsComplaintDTO;
+				 complaintObj.fromDate=dateformat.format(fromdate.text);
+				 complaintObj.toDate=dateformat.format(todate.text);
+				 complaintObj.status=statusid.selectedItem.data;
+				// empRO.fetchComplaintsReport(complaintObj);
+				 
+				 
+				 var urlString:String="/vbsapp/ReportServlet";
+				 var request:URLRequest=new URLRequest;
+				 
+				 var reqParam:URLVariables=new URLVariables;
+				 if(currentState=='schemestate')
+				 reqParam.action='SCHEMES';
+				 else
+				 reqParam.action='COMPLAINTS';
+				 reqParam.fromDate=complaintObj.fromDate;
+				 reqParam.toDate=complaintObj.toDate;
+				 reqParam.status=complaintObj.status;
+				 
+				 request.url=urlString;
+				 request.data=reqParam;
+				 request.method=URLRequestMethod.POST;
+				 navigateToURL(request,"_blank");
+				 
+			}
+
+			private function fetchComplaintResult(event:ResultEvent):void{
+				Alert.show((event.result as ArrayCollection)+"");
+			}
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="State1"/>
+		<s:State name="schemestate"/>
+	</s:states>
+
+	
+	
+	<s:BorderContainer width="100%" height="100%">
+		<s:VGroup width="100%"  >
+			<s:HGroup width="100%" horizontalAlign="left" verticalAlign="contentJustify" height="55">
+				<mx:Spacer width="74" />
+				<s:Label text="Criteria" width="330" height="24" fontSize="15" verticalAlign="middle" textAlign="left"/>
+			</s:HGroup>
+		
+<s:HGroup width="100%" >
+	<s:Label x="14" y="10" text="Date From&#xd;" width="129" height="21" verticalAlign="middle" textAlign="right"/>
+	<mx:DateField x="103" y="10" width="114" id="fromdate" change="fromdate_changeHandler(event)"/>
+	<!--<mx:Image  source="@Embed(source='../../images/remove.png')" click="{fromdate.text='';fromdate.showToday=true}" toolTip="Clear From Date"/>-->  
+	<s:Label x="215" y="10" text="Date To&#xd;" width="81" height="21" verticalAlign="middle" textAlign="right"/>
+	<mx:DateField x="304" y="10" id="todate" change="todate_changeHandler(event)" />
+	<!--<mx:Image  source="@Embed(source='../../images/remove.png')" click="{todate.text='';todate.showToday=true}" toolTip="Clear To Date"/>-->
+	<mx:Spacer width="74" />
+</s:HGroup>
+
+<s:HGroup width="100%" id="complaintid"  includeIn="State1">
+ 	<s:Label x="10" y="50" text="Complaint Type" width="130" height="30" textAlign="right" verticalAlign="middle"/>
+	<s:DropDownList x="103" y="55" id="statusid"   selectedIndex="1" dataProvider="{complaintstatusAC}" width="184"></s:DropDownList>
+ </s:HGroup>
+
+			<s:HGroup width="100%" id="schemeid"  includeIn="schemestate">
+				<s:Label x="10" y="50" text="Scheme Name" width="130" height="30" textAlign="right" verticalAlign="middle"/>
+				<s:DropDownList x="103" y="55"   width="200"></s:DropDownList>
+			</s:HGroup>
+
+
+<s:HGroup horizontalAlign="left" width="100%">
+	<utils:LinkButton label="Download" click="linkbutton1_clickHandler(event)"/>
+</s:HGroup>
+	
+		
+			<s:HGroup width="100%"  horizontalAlign="center">
+				<s:Button x="226" y="220" label="Close" click="button1_clickHandler(event)"/>
+			</s:HGroup>
+		</s:VGroup>
+	
+</s:BorderContainer>
+</s:Panel>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx"   height="300" xmlns:utils="VBS.utils.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	 	<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+			<s:method name="saveorUpdateComlaints"        result="saveorUpdateComplaintResult(event)" fault="faultHandler(event);"/>
+		</s:RemoteObject>
+		<mx:DateFormatter id="dayformat" formatString="MMM"/>
+		<mx:DateFormatter id="dateformat" formatString="DD-MMM-YYYY HH:NN:SS"/> 
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import VBS.domain.VbmsComplaintDTO;
+			import VBS.utils.StaticDataHolder;
+			
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+		 
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				 
+				 var vbmsComplaintObj:VbmsComplaintDTO=new VbmsComplaintDTO;
+				 var dateObj:Date=new Date();
+				 vbmsComplaintObj.complaintid="COMP"+dateObj.getFullYear()+dateObj.getMonth()+dateObj.getDate()+dateObj.getHours()+dateObj.getMinutes()+dateObj.getMilliseconds();
+				 vbmsComplaintObj.desc=complaintdescid.text;
+				 vbmsComplaintObj.raisedby=raisedby.text;
+				 vbmsComplaintObj.area=areaid.text;
+				 vbmsComplaintObj.status='OPEN';
+				 vbmsComplaintObj.year_name=""+dateObj.getFullYear();
+				 vbmsComplaintObj.date_name=""+dateObj.getDate();
+				 vbmsComplaintObj.created_dttm=dateformat.format(dateObj);
+				 vbmsComplaintObj.updated_dttm=dateformat.format(dateObj);
+				 vbmsComplaintObj.createdby=StaticDataHolder.getUserName();
+				 var strDate:String=dayformat.format(dateObj);
+				 vbmsComplaintObj.month_name=strDate;
+				 
+				 complaintAC.addItem(vbmsComplaintObj); 
+				 empRO.saveorUpdateComlaints(complaintAC);
+			}
+			private function saveorUpdateComplaintResult(event:ResultEvent):void{
+				Alert.show("Successfully Added Complaint");
+			}
+		]]>
+	</fx:Script>
+	<fx:Script source="../utils/vbscommon.as"/>
+	<s:Panel title="Add Complaint"  styleName="stPanel" id="disk"    
+								  width="100%"   >
+		<mx:Form x="-5" y="10" width="100%" height="100%" label="Age Lower Limit">
+		<mx:FormHeading label="Add Complaint"/>
+		<mx:FormItem label="Complaint Description">
+			<s:TextInput id="complaintdescid"/>
+		</mx:FormItem>
+		<mx:FormItem label="Complaint Raised by ">
+			<s:TextInput id="raisedby"/>
+		</mx:FormItem>
+		<mx:FormItem label="Complaint Area">
+			<s:TextInput id="areaid"/>
+		</mx:FormItem>
+		 
+		 
+		 
+		<mx:FormItem label="Label">
+		<s:Button label="Create Complaint" click="button1_clickHandler(event)"/>
+		</mx:FormItem>
+	</mx:Form>
+		</s:Panel>
+</s:NavigatorContent>

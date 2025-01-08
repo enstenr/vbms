@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas  xmlns:mx="library://ns.adobe.com/flex/mx"    xmlns:fx="http://ns.adobe.com/mxml/2009"  xmlns:s="library://ns.adobe.com/flex/spark"     width="100%"             height="100%" xmlns:utils="VBS.utils.*">
+<fx:Style source="/assets/css/ststyle.css"/>
+	<fx:Script source="../utils/vbscommon.as"/>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<mx:DateFormatter id="dtformat"  formatString="MM/DD/YYYY" />
+		
+		<s:RemoteObject id="empRO" showBusyCursor="true"   destination="rpcBean">
+			<s:method name="fetchVoter"  result="fetchVoterResult(event)" fault="faultHandler(event);"/>
+			<s:method name="saveorUpdateVoter"  result="saveorUpdateVoterResult(event)" fault="faultHandler(event);"/>
+		</s:RemoteObject>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import VBS.domain.VbmsVoterDTO;
+			
+			import flash.net.sendToURL;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.rpc.events.ResultEvent;
+			protected function uploadType_changeHandler(event:Event):void
+			{
+				var selectedType:String=event.currentTarget.selectedValue as String;
+				//Alert.show(selectedType);
+				 if(selectedType=='Upload Voter'){
+					currentState='bulkupload';
+				 }
+					 else{
+					currentState='basestate';
+					 }
+					 
+			}
+			public function fetchVoterResult(event:ResultEvent):void{
+				
+			}
+			public function saveorUpdateVoterResult(event:ResultEvent):void{
+			Alert.show("Successfully Added Voter","VBMS Message",4);	
+			}
+			protected function button1_clickHandler(event:MouseEvent):void
+			{var vbmsCollection:ArrayCollection=new ArrayCollection;
+				var vbmsVoter:VbmsVoterDTO=new VbmsVoterDTO;
+				vbmsVoter.votername=nameid.text;
+				vbmsVoter.cardnumber=cardnumid.text;
+				vbmsVoter.address=addressid.text;
+				vbmsVoter.constituency=constituencyid.text;
+				
+				vbmsCollection.addItem(vbmsVoter);
+				empRO.saveorUpdateVoter(vbmsCollection);
+			}
+
+			public var fileRef:FileReference;
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+			 
+					initializeMethod();
+					var filter:FileFilter=new FileFilter("Excel Files(*.xls,*.xlsx)","*.xls;*.xlsx");
+					var fileArray=new Array(filter);
+					fileRef.browse(fileArray);
+			 
+			}
+			public function initializeMethod():void{
+				fileRef=new FileReference();
+				fileRef.addEventListener(Event.COMPLETE, uploadSuccess);
+				fileRef.addEventListener(HTTPStatusEvent.HTTP_STATUS, uploadError);
+				fileRef.addEventListener(IOErrorEvent.IO_ERROR, uploadError);
+				fileRef.addEventListener(SecurityErrorEvent.SECURITY_ERROR, uploadError);
+				fileRef.addEventListener(Event.SELECT,selectEvent);
+				fileRef.addEventListener(ProgressEvent.PROGRESS,fileRef_progress);
+				fileRef.addEventListener(Event.COMPLETE,completeHandler);
+			}
+			private function completeHandler(event:Event):void
+			{
+				progressBar.label = "Uploading Please Wait ... ";
+				progressBar.enabled = false;
+				progressBar.visible=false;
+			}
+			private function fileRef_progress(event:ProgressEvent):void {
+				progressBar.visible = true;
+				progressBar.setProgress(event.bytesLoaded, event.bytesTotal);
+				//progressBar.label=event.bytesLoaded+"";
+			}
+			public function uploadSuccess(event:Event):void{
+				Alert.show("Uploaded SuccessFully");	
+			}
+			public function uploadError(event:Event):void{
+				
+			}
+			public function selectEvent(event:Event):void{
+				Alert.show("Upload"+fileRef.name,"uploading",Alert.YES|Alert.NO,null,proceedWithUpload);
+			}
+			public function proceedWithUpload(event:CloseEvent):void{
+				var urlString:String="/vbsapp/UploadServlet";
+				var request:URLRequest=new URLRequest;
+				request.url=urlString;
+				request.method=URLRequestMethod.POST;
+				fileRef.upload(request);
+			}
+
+
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				var urlString:String="/vbsapp/ReportServlet";
+				var request:URLRequest=new URLRequest;
+				
+				var reqParam:URLVariables=new URLVariables;
+				reqParam.action='VOTER_TEMPLATE';
+					
+				request.url=urlString;
+				request.data=reqParam;
+				request.method=URLRequestMethod.POST;
+				navigateToURL(request,"_blank");
+				 
+			}
+
+		]]>
+	</fx:Script>
+
+	 	<mx:states>
+	 		 	<s:State name="basestate"/>
+				<mx:State name="bulkupload"/>
+	 	</mx:states>
+	 	<fx:Declarations>
+	 		 	<s:RadioButtonGroup id="radiogroup1"/>
+	 	</fx:Declarations>
+
+	
+	 	<mx:Canvas label="Add " width="100%"     height="100%">
+			<mx:Panel title="Upload"   height="100%"  styleName="stPanel" id="disk" layout="vertical"  horizontalGap="0" verticalGap="0" 
+				paddingBottom="1" paddingLeft="3" paddingRight="3"   width="100%"   >
+			<mx:VBox width="100%"  height="100%">
+				<mx:Spacer  height="7"/>
+				<s:BorderContainer width="100%"      styleName="stPanel" visible="true"  includeInLayout="true" dropShadowVisible="true" height="29">
+				        <mx:HBox width="100%" paddingBottom="0" paddingLeft="0" paddingRight="0" paddingTop="0"   x="-10" y="-2">
+			            	<mx:Grid>
+			           			<mx:GridRow  >
+			           				<mx:GridItem  >
+										<mx:Spacer width="2%"/>
+			           					<mx:FormItem  label="Upload:" styleName="citiFormItem" required="true"  textAlign="right" width="95"/> 
+			           					<mx:HBox>
+			           						<mx:RadioButtonGroup  id="uploadType" enabled="true"  change="uploadType_changeHandler(event)"  />
+			           						<mx:RadioButton  visible="true" includeInLayout="true" groupName="uploadType" id="uType1" selected="true" name="add" label="Add Voter"/>												
+			           						<mx:RadioButton visible="true" includeInLayout="true" groupName="uploadType" id="uType2" label="Upload Voter" name="upload" />			
+			           					</mx:HBox>
+			           				</mx:GridItem>
+			           			</mx:GridRow  >
+								</mx:Grid>
+						</mx:HBox>
+				</s:BorderContainer>
+			  
+	  			
+			
+	 		<s:BorderContainer width="100%"    id="addVoter" styleName="stPanel"  includeIn="basestate" dropShadowVisible="true">
+				
+				<mx:HBox width="100%" >
+			
+				<mx:Grid width="100%" height="376">
+					<mx:GridRow width="100%">
+						<mx:GridItem>
+							<mx:Spacer  height="10" width="100%"/>	
+						</mx:GridItem>
+						
+					</mx:GridRow>
+					<mx:GridRow height="22">
+						<mx:GridItem  horizontalAlign="left" verticalAlign="middle">
+							<s:Label styleName="citiFormItem"  text="Voter Details" />
+						</mx:GridItem>
+					</mx:GridRow>
+					<mx:GridRow   width="100%"   >
+						<mx:GridItem width="100%"   >
+				 	  	<mx:HBox width="100%" >
+						<s:BorderContainer styleName="stPanel" >
+						 	 <mx:Form>
+								
+								 <mx:FormItem label="Name" required="true">
+								 	<s:TextInput id="nameid"/>
+								 </mx:FormItem>
+								 <mx:FormItem label="CardNumber" required="true">
+								 	<s:TextInput id="cardnumid"/>
+								 </mx:FormItem>
+								 <mx:FormItem label="Address" required="true">
+								 	<s:TextInput id="addressid"/>
+								 </mx:FormItem>
+								 <mx:FormItem label="Constituency" required="true">
+								 	<s:TextInput id="constituencyid"/>
+								 </mx:FormItem>
+								 <mx:FormItem label="Booth Number" required="true">
+								 	<s:TextInput id="boothid"/>
+								 </mx:FormItem>
+								 <mx:FormItem label="Ward" required="true">
+								 	<s:TextInput id="wardid"/>
+								 </mx:FormItem>
+								 <mx:FormItem label="Gender" required="true">
+								 	<s:TextInput id="genderid"/>
+								 </mx:FormItem>
+								 <mx:FormItem label="Age" required="true">
+								 	<s:TextInput id="ageid"/>
+								 </mx:FormItem>
+								 <mx:FormItem label="Qualification">
+								 	<s:TextInput id="qualificationid"/>
+								 </mx:FormItem>
+					 		 </mx:Form>
+						</s:BorderContainer>
+							<s:BorderContainer styleName="stPanel" >
+								<mx:Form height="278">
+									<mx:FormItem label="Marital status">
+										<s:TextInput id="maritlstatus"/>
+									</mx:FormItem>
+									<mx:FormItem label="Children">
+										<s:TextInput id="numchildren"/>
+									</mx:FormItem>
+									<mx:FormItem label="Children qualifiaction">
+										<s:TextInput id="childqualid"/>
+									</mx:FormItem>
+									<mx:FormItem label="Household income">
+										<s:TextInput id="houseincomeid"/>
+									</mx:FormItem>
+									<mx:FormItem label="Own house or rented house">
+										<s:TextInput id="housetypeid"/>
+									</mx:FormItem>
+									<mx:FormItem label="Rented - how many years">
+										<s:TextInput id="rentyearsid"/>
+									</mx:FormItem>
+									<mx:FormItem label="Father name - with id">
+										<s:TextInput id="fathernameid"/>
+									</mx:FormItem>
+				 				</mx:Form>
+							</s:BorderContainer>
+							</mx:HBox>
+						</mx:GridItem>
+					</mx:GridRow>
+					<mx:GridRow width="100%">
+						<mx:GridItem>
+							<mx:Spacer  height="10" width="100%"/>	
+						</mx:GridItem>
+			 		</mx:GridRow>
+					<mx:GridRow>
+						<mx:GridItem horizontalAlign="center">
+							<s:Button label="Create Voter" click="button1_clickHandler(event)"/>	
+						</mx:GridItem>
+						
+						
+					</mx:GridRow>
+				</mx:Grid>
+			</mx:HBox>
+			</s:BorderContainer>
+		 
+				<s:BorderContainer width="100%"  cornerRadius="5" includeIn="bulkupload"  id="uploadVoter" styleName="stPanel"   dropShadowVisible="true">
+					
+					<mx:Spacer  height="10"/>
+				<mx:Grid width="100%"    >
+					<mx:GridRow   width="100%"  >
+						<mx:GridItem  >
+							<mx:FormItem label="Voter Details" styleName="citiFormItem" />
+						</mx:GridItem>
+					</mx:GridRow>
+			
+					
+					<mx:GridRow  width="100%">
+						<mx:GridItem width="100%">
+							
+							
+							<mx:FormItem  styleName="citiFormItem" label="File to Upload(xls):" required="true"/>
+							<mx:HBox>
+								<mx:TextInput styleName="citiTextInput" id="filenameRef" width="300" editable="false"/>
+								<mx:Button   label="Browse"  click="button2_clickHandler(event)"  />
+							<!--	<mx:LinkButton   label="Click here To Get Template" click="linkbutton1_clickHandler(event)"  color="#001EFF" rollOverColor="#53F457"/>-->
+								<utils:LinkButton label="Template" click="linkbutton1_clickHandler(event)"  color="#001EFF" rollOverColor="#53F457"/>
+								
+								
+							</mx:HBox>
+						</mx:GridItem>
+					</mx:GridRow>
+					<mx:GridRow width="100%">
+						<mx:GridItem width="100%" horizontalAlign="center">
+							
+						<mx:ProgressBar id="progressBar"
+										indeterminate="true"
+										visible="false"  width="361" height="56"/>
+						</mx:GridItem>
+					</mx:GridRow>
+					
+					 
+				</mx:Grid>
+ 			</s:BorderContainer>
+			</mx:VBox>
+			</mx:Panel>
+		</mx:Canvas>
+		 
+	 
+</mx:Canvas>
