@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 23, 2012 6:57:49 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="hibernateconfig.hbm.VbmsMenu" table="vbms_menu">
+        <id name="menuId" type="int" unsaved-value="0">
+            <column name="MENU_ID" />
+            <generator class="increment" />
+        </id>
+        <property name="menuLevel" type="string">
+            <column name="MENU_LEVEL" length="3" />
+        </property>
+        <property name="componentName" type="string">
+            <column name="COMPONENT_NAME" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

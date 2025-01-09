@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/vbms/!svn/ver/8/trunk/vbmsapp/vbsSource/hibernateconfig/hbm
+END
+VbmsMenu.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsMenu.hbm.xml
+END
+VbmsScheme.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsScheme.hbm.xml
+END
+VbmsComplaint.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsComplaint.hbm.xml
+END
+VbmsUser.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsUser.java
+END
+VbmsVoter.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsVoter.java
+END
+VbmsUser.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsUser.hbm.xml
+END
+VbmsVoter.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsVoter.hbm.xml
+END
+VbmsMenu.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsMenu.java
+END
+VbmsScheme.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsScheme.java
+END
+VbmsComplaint.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/hibernateconfig/hbm/VbmsComplaint.java
+END

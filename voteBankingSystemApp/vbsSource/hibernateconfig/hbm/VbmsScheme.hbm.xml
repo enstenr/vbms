@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 23, 2012 6:57:49 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="hibernateconfig.hbm.VbmsScheme" table="vbms_scheme">
+        <id name="schemeid" type="int" unsaved-value="0">
+            <column name="schemeid" />
+            <generator class="increment" />
+        </id>
+        <property name="schemename" type="string">
+            <column name="schemename" length="200" />
+        </property>
+        <property name="schemedescription" type="string">
+            <column name="schemedescription" length="2000" />
+        </property>
+        <property name="startdate" type="string">
+            <column name="startdate" length="10" />
+        </property>
+        <property name="enddate" type="string">
+            <column name="enddate" length="10" />
+        </property>
+        <property name="agelowerlimit" type="string">
+            <column name="agelowerlimit" length="3" />
+        </property>
+        <property name="ageupperlimit" type="string">
+            <column name="ageupperlimit" length="3" />
+        </property>
+        <property name="gender" type="string">
+            <column name="gender" length="7" />
+        </property>
+        <property name="area" type="string">
+            <column name="area" length="20" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>

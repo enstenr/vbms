@@ -1,0 +1,94 @@
+package com.vbms.servlet;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class ReportServlet extends HttpServlet {
+	 
+	private String VOTER_TEMPLATE= "VOTER_TEMPLATE";
+
+	private String COMPLAINTS= "COMPLAINTS";
+
+	private String SCHEMES= "SCHEMES";
+
+	private String MONTHLY_6A_REPORT = "MONTHLY_6A_REPORT";
+
+	private String MONTHLY_3A_REPORT = "MONTHLY_3A_REPORT";
+
+	@Override
+	protected void doPost(HttpServletRequest arg0, HttpServletResponse arg1)
+			throws ServletException, IOException {
+		arg1.setContentType("application/excel");
+		String action=(String) arg0.getParameter("action");
+		String year = (String) arg0.getParameter("year");
+		String month = (String) arg0.getParameter("month");
+		String reportType = (String) arg0.getParameter("REPORT_TYPE");
+	 	
+	 
+	 	
+	 	if(VOTER_TEMPLATE.equalsIgnoreCase(action))
+	 	{
+	 		//code to generate template
+	 		try {
+				generateTemplate(arg0, arg1);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	 	}else if (COMPLAINTS.equalsIgnoreCase(action)){
+	 		
+	 	}else if( SCHEMES.equalsIgnoreCase(action)){
+	 		
+	 	}
+	 	
+	 }
+
+	@Override
+	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1)
+			throws ServletException, IOException {
+		doPost(arg0, arg1);
+	}
+
+	public void generateTemplate(HttpServletRequest arg0, HttpServletResponse arg)
+			throws Exception {
+	 XSSFWorkbook wbook = null;
+		arg.setHeader("Content-Disposition",
+		"attachment; filename ="+VOTER_TEMPLATE+".xls");
+		//arg.setContentType("application/vnd.ms-excel");  
+		  Workbook wbookTemplate=WorkbookFactory.create(new FileInputStream(getServletContext().getRealPath("/")+"/"+VOTER_TEMPLATE+".xls"));
+		  HSSFWorkbook wb=new HSSFWorkbook(new FileInputStream(getServletContext().getRealPath("/")+"/"+VOTER_TEMPLATE+".xls"));
+/*			 FileOutputStream out = new FileOutputStream(getServletContext().getRealPath("/") +"/template.xlsx");
+			 wbookTemplate.write(out);
+		        out.close();
+*/
+		   
+		  OutputStream out = arg.getOutputStream();
+		  wb.write(out);
+		  out.close();
+		 // arg.getOutputStream().flush();
+		  
+		  /*wbookTemplate.write(arg.getOutputStream());
+		  arg.getOutputStream().flush();*/
+		
+	}
+
+	 
+
+	 
+
+	private boolean xlsx = false;
+
+	 
+
+}

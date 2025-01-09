@@ -1,0 +1,130 @@
+package com.vbms.service;
+
+import hibernateconfig.hbm.VbmsComplaint;
+import hibernateconfig.hbm.VbmsMenu;
+import hibernateconfig.hbm.VbmsScheme;
+import hibernateconfig.hbm.VbmsVoter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.vbms.dao.Interface.IDao;
+import com.vbms.domain.VbmsComplaintDTO;
+import com.vbms.domain.VbmsSchemeDTO;
+import com.vbms.domain.VbmsUserDTO;
+import com.vbms.domain.VbmsVoterDTO;
+import com.vbms.exception.VBMSException;
+import com.vbms.service.Interface.IService;
+import com.vbms.util.VBMSUtil;
+
+ public class ServiceImpl implements IService{
+	private IDao dao;
+	
+	
+	public IDao getDao() {
+		return dao;
+	}
+
+
+	public void setDao(IDao dao) {
+		this.dao = dao;
+	}
+/**
+ * Login validation related Business Logic
+ */
+ 	public List<String> getUserTabs(VbmsUserDTO userDTOObj) throws VBMSException{
+		List<String> removeList=new ArrayList<String>();
+		List<VbmsMenu> menuList=dao.getAllMenu();
+		List<String> menuListStr=new ArrayList<String>();
+		String[] menuArray=userDTOObj.getUserMenu().split("0");
+		
+		List<String> userMenuList=new ArrayList<String>();
+		
+		 for(VbmsMenu vbmsMenuObj:menuList){
+			menuListStr.add(vbmsMenuObj.getComponentName());
+		}
+		 
+		 for(int count=0;count<menuArray.length;count++){
+				userMenuList.add(menuArray[count]);
+		}
+		
+			for(String menuObj:menuListStr)
+			{  
+				if(!userMenuList.contains(menuObj))
+					removeList.add(menuObj);
+			}
+			 
+
+		return removeList;
+	}
+
+
+	public VbmsUserDTO findUser(VbmsUserDTO userDTOObj) throws VBMSException {
+		return (VBMSUtil.convertvbmsUserDomaintoDTO(dao.findUser(userDTOObj)));
+	}
+
+/**
+ * User Related Business Logic
+ */
+	public List<VbmsUserDTO> saveorUpdateUser(List<VbmsUserDTO> userDTOList)
+			throws VBMSException {
+		
+		return dao.saveorUpdateUser(userDTOList);
+	}
+	
+	public List<VbmsUserDTO> fetchUser(VbmsUserDTO userDTOObj)throws VBMSException{
+		return (VBMSUtil.convertUserDomainListToDTO(dao.fetchUser(userDTOObj)));
+	}
+
+
+	public List<VbmsSchemeDTO> fetchSchemes(VbmsSchemeDTO schemeDTOObj)
+			throws VBMSException {
+		List<VbmsScheme> vbmsSchemeList=(List<VbmsScheme>) (dao.fetchSchemes(schemeDTOObj));
+		return VBMSUtil.convertSchemeDomainListToDTO(vbmsSchemeList);
+	}
+
+
+	public List<VbmsSchemeDTO> saveorUpdateScheme(List<VbmsSchemeDTO> schemeDTOList)
+			throws VBMSException {
+		 
+		return   dao.saveorUpdateScheme(schemeDTOList);
+	}
+
+
+	public List<VbmsVoterDTO> fetchVoter(VbmsVoterDTO voterDTOObj)
+			throws VBMSException {
+		List<VbmsVoter> vbmsVoterList=(List<VbmsVoter>) (dao.fetchVoter(voterDTOObj));
+		return VBMSUtil.convertVoterDomainListToDTO(vbmsVoterList);
+	}
+
+
+	public List<VbmsVoterDTO> saveorUpdateVoter(List<VbmsVoterDTO> voterDTOList)
+			throws VBMSException {
+		return   VBMSUtil.convertVoterDomainListToDTO(dao.saveorUpdateVoter(voterDTOList));
+	}
+
+
+	public List<VbmsComplaintDTO> fetchComplaints(
+			VbmsComplaintDTO complaintsDTOObj) throws VBMSException {
+		List<VbmsComplaint> vbmsVoterList=(List<VbmsComplaint>) (dao.fetchComplaints(complaintsDTOObj));
+		return VBMSUtil.convertComplaintDomainListToDTO(vbmsVoterList);
+	}
+
+
+	public List<VbmsComplaintDTO> saveorUpdateComlaints(
+			List<VbmsComplaintDTO> complaintsDTOList) throws VBMSException {
+		return   VBMSUtil.convertComplaintDomainListToDTO(dao.saveorUpdateComlaints(complaintsDTOList));
+	}
+
+
+	public List<VbmsComplaintDTO> fetchComplaintsReport(
+			VbmsComplaintDTO complaintsDTOObj) throws VBMSException {
+		List<VbmsComplaint> vbmsVoterList=(List<VbmsComplaint>) (dao.fetchComplaintsReport(complaintsDTOObj));
+		return VBMSUtil.convertComplaintDomainListToDTO(vbmsVoterList);
+	}
+
+
+	 
+
+	
+	 }
