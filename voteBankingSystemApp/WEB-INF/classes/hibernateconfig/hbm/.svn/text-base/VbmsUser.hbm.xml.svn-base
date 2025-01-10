@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 23, 2012 6:57:49 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="hibernateconfig.hbm.VbmsUser" table="vbms_user">
+        <id name="userId" type="java.lang.Integer" unsaved-value="0">
+            <column name="user_id" />
+            <generator class="increment" />
+        </id>
+        <property name="userName" type="string">
+            <column name="user_name" length="100" />
+        </property>
+        <property name="userLogin" type="string">
+            <column name="user_login" length="20" />
+        </property>
+        <property name="userPassword" type="string">
+            <column name="user_password" length="10" />
+        </property>
+        <property name="userMenu" type="string">
+            <column name="user_menu" length="100" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="20" />
+        </property>
+        <property name="accessType" type="string">
+            <column name="access_type" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

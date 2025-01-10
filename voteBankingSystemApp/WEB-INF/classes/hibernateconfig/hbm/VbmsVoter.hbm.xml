@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 23, 2012 6:57:49 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="hibernateconfig.hbm.VbmsVoter" table="vbms_voter">
+        <id name="voterid" type="int" unsaved-value="0">
+            <column name="voterid" />
+            <generator class="increment" />
+        </id>
+        <property name="votername" type="string">
+            <column name="votername" length="200" not-null="true" />
+        </property>
+        <property name="cardnumber" type="string">
+            <column name="cardnumber" length="20" not-null="true" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="2000" />
+        </property>
+        <property name="constituency" type="string">
+            <column name="constituency" length="50"   />
+        </property>
+        <property name="boothnumber" type="string">
+            <column name="boothnumber" length="10"  />
+        </property>
+        <property name="ward" type="string">
+            <column name="ward" length="200"  />
+        </property>
+        <property name="gender" type="string">
+            <column name="gender" length="6"   />
+        </property>
+        <property name="age" type="string">
+            <column name="age" length="3"  />
+        </property>
+        <property name="qualification" type="string">
+            <column name="qualification" length="200" />
+        </property>
+        <property name="maritalstatus" type="string">
+            <column name="maritalstatus" length="200" />
+        </property>
+        <property name="children" type="string">
+            <column name="children" length="200" />
+        </property>
+        <property name="childrenqualification" type="string">
+            <column name="childrenqualification" length="200" />
+        </property>
+        <property name="houseincome" type="string">
+            <column name="houseincome" length="200" />
+        </property>
+        <property name="housetype" type="string">
+            <column name="housetype" length="200" />
+        </property>
+        <property name="rentyears" type="string">
+            <column name="rentyears" length="200" />
+        </property>
+        <property name="fathername" type="string">
+            <column name="fathername" length="200" />
+        </property>
+    </class>
+</hibernate-mapping>

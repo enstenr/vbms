@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/vbms/!svn/ver/8/trunk/vbmsapp/vbsSource/com/vbms/domain
+END
+VbmsSchemeDTO.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/com/vbms/domain/VbmsSchemeDTO.java
+END
+VbmsComplaintDTO.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/com/vbms/domain/VbmsComplaintDTO.java
+END
+VbmsUserDTO.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/com/vbms/domain/VbmsUserDTO.java
+END
+VbmsVoterDTO.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/vbms/!svn/ver/15/trunk/vbmsapp/vbsSource/com/vbms/domain/VbmsVoterDTO.java
+END

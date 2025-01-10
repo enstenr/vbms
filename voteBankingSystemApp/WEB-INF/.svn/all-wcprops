@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/vbms/!svn/ver/11/trunk/vbmsapp/WEB-INF
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/vbms/!svn/ver/11/trunk/vbmsapp/WEB-INF/web.xml
+END
+.cvsignore
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/vbms/!svn/ver/6/trunk/vbmsapp/WEB-INF/.cvsignore
+END

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/vbms/!svn/ver/10/trunk/vbmsapp/WEB-INF/flex
+END
+messaging-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/vbms/!svn/ver/6/trunk/vbmsapp/WEB-INF/flex/messaging-config.xml
+END
+version.properties
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/vbms/!svn/ver/6/trunk/vbmsapp/WEB-INF/flex/version.properties
+END
+flex-servlet-context.xml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/vbms/!svn/ver/13/trunk/vbmsapp/WEB-INF/flex/flex-servlet-context.xml
+END
+proxy-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/vbms/!svn/ver/6/trunk/vbmsapp/WEB-INF/flex/proxy-config.xml
+END
+services-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/vbms/!svn/ver/10/trunk/vbmsapp/WEB-INF/flex/services-config.xml
+END
+remoting-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/vbms/!svn/ver/10/trunk/vbmsapp/WEB-INF/flex/remoting-config.xml
+END
